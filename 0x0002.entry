@@ -1,7 +1,7 @@
 <p>
 Esse artigo vai trazer uma compilação dos meus estudos sobre multimídia no Qt usando a poderosa libVLC, mas antes de tudo, alguns já devem estar se
 perguntando "Porque usar o VLC sendo que o Qt já vem com o Phonon embarcado?", Essa é uma boa pergunta, o framework Phonon do projeto KDE é excelente
-e cumpre muito bem seu papel, para cada plataforma é usado um backend de vídeo e áudio, no Windows é o DirectShow, no OSX o QuickTime, no Linux e "unixes" em geral, pode ser o GStreamer, Xine ou mesmo o VLC, dentro outros, a lista completa de backends suportados é <a href="https://projects.kde.org/projects/kdesupport/phonon">essa</a></p>
+e cumpre muito bem seu papel, para cada plataforma é usado um backend de vídeo e áudio, no Windows é o DirectShow, no OSX o QuickTime, no Linux e "unixes" em geral, pode ser o GStreamer, Xine ou mesmo o VLC, dentro outros, a lista completa de backends suportados é <a href="https://projects.kde.org/projects/kdesupport/phonon">essa</a>.</p>
 
 <p>
 A razão pela qual eu escolhi o VLC como backend de multimídia e descartei a hipótese de usar o Phonon (por enquanto), é que eu queria reproduzir vídeo dentro do Graphics View Framework, e devido a forma que é implementado o desenho no Phonon isso não foi possível, apesar que.. há algum tempo, no Qt labs foi <a href="http://labs.qt.nokia.com/2008/11/28/videos-get-pimped/">postado</a> uma melhoria bem significativa na dupla Qt e Phonon, onde é possível reproduzir vídeos com aceleração de hardware, incluindo zoom, alpha e transformação, a primeira coisa que fiz (na verdade a segunda, após ler o artigo dos trolls[1]) foi testar essa maravilha, e funcionou, mas após algum tempo, a aplicação parava de responder e fechava, pelo visto era um experimento windows-only :(
@@ -29,7 +29,7 @@ Note that widgets with the Qt::WA_PaintOnScreen widget attribute
 set and widgets that wrap an external
 application or controller cannot be embedded.
 Examples are QGLWidget and QAxWidget.
-<pre>
+</pre>
 
 <p>
 Outra decepção... resumidamente, como meu widget passava o ID da janela (no caso do widget mesmo) para a libVLC, ele estava
