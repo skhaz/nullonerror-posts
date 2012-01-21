@@ -72,7 +72,7 @@ Resumindo... Apesar do pequeno overhead[2], a versão em Qt ficou bem mais perfo
 <br />
 
 <p>
-Bom, é isso aí, o código fonte está aqui [TODO link]. Em breve, minha próxima tentativa será usando pixel buffer (QGLBuffer)
+Bom, é isso aí, o código fonte está <a href="https://github.com/skhaz/qt-youtube">aqui</a>. Em breve, minha próxima tentativa será usando pixel buffer (QGLBuffer)
 </p>
 <br />
 
