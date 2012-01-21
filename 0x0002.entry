@@ -18,7 +18,7 @@ Minha primeira tentativa com a libVLC foi a mais simples possível, fiz um clone
 </p>
 <br />
 
-{% code 'qt' %}
+{% code 'cpp' %}
 MyVideoPlayer video;
 QGraphicsProxyWidget *proxy = scene.addWidget(&video);
 {% endcode %}
@@ -51,7 +51,7 @@ Vamos portar esse código para Qt então, ao invés de criar uma classe que herd
 </p>
 <br />
 
-{% code 'qt' %}
+{% code 'cpp' %}
 image = QImage(callback->pixels, bounds.width(), bounds.height(), QImage::Format_RGB32);
 callback->mutex->unlock();
 update();
@@ -62,7 +62,7 @@ Já no método paint, basta apenas desenhar a imagem:
 </p>
 <br />
 
-{% code 'qt' %}
+{% code 'cpp' %}
 painter->drawImage(QPoint(0, 0), image);
 {% endcode %}
 
