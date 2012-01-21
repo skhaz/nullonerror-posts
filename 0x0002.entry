@@ -1,4 +1,3 @@
-
 <p>
 Esse artigo vai trazer uma compilação dos meus estudos sobre multimídia no Qt usando a poderosa libVLC, mas antes de tudo, alguns já devem estar se
 perguntando "Porque usar o VLC sendo que o Qt já vem com o Phonon embarcado?", Essa é uma boa pergunta, o framework Phonon do projeto KDE é excelente
@@ -78,4 +77,3 @@ Referências:
 <li><a href="http://labs.qt.nokia.com/2008/11/28/videos-get-pimped/">Videos get pimped</a></li>
 </ul>
 </p>
-
