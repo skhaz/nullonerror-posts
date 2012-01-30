@@ -1,2 +1,4 @@
 
-{% blobimage src="assets/0xFFFU/fffu.png" %}
+<p>
+  {% blobimage src="assets/0xFFFU/fffu.png" %}
+</p>
