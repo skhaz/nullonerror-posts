@@ -65,27 +65,31 @@ F.A.Q.
 P. E o que acontece se você não ter o git instalado?<br />
 R. Eu posso usar o editor online do github :D<br />
 </p>
-
+<br />
 <p>
 P. Legal a ideia, você que inventou?<br />
 R. Não, na época quando eu li a notícia, que o github passaria a suportar hooks via HTTP, eu já imaginei que daria para fazer algo do tipo, se você googlar um pouco, vai ver que existe outros projetos do tipo, e muito melhores que o meu :)<br />
 </p>
 
+<br />
 <p>
 P. Não é reinventar a roda isso?<br />
 R. Sim, mas o principal propósito foi em aprender mais sobre o Google App Engine [code.google.com/appengine/]<br />
 </p>
 
+<br />
 <p>
 P. Porque você não usou o próprio appengine para hospedar as imagens?<br />
 R. Porque é "pago" (na verdade é free, mas tem que ter google checkout com um cartão de cretido válido)<br /?
 </p>
 
+<br />
 <p>
 P. E quanto a seguraça?<br />
 R. Bom... nada é nem mesmo 90% seguro, mas como esse sistemas não tem nenhuma  entrada de dados a não ser pelo github, acho que tem um nivel razoável de segurança, Sem contar é claro na possibilidade de alguem descobrir minhas senhas :P<br />
 </p>
 
+<br />
 <p>
 P. Porque nullonerror?<br />
 R. Tive essa ideia há alguns meses atrás, enquanto lia a API do libVLC, sem contar que várias APIs em C/C++ retornam nulo quando há algum erro.<br />
