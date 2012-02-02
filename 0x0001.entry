@@ -1,0 +1,100 @@
+<p>
+Algumas pessoas me perguntaram como funciona esse "blog", para aqueles que estavam curiosos, aqui vai um micro-artigo sobre isso.
+</p>
+
+<p>
+Para escrever uma nova entrada no blog, e necessário dois arquivos, um com a extensão .entry, que contem a entrada em si, e um com a extensão .meta, que contem informações do tipo título, tags e etc, após salvar e adicionar no repositório, após a operação de <a href="http://gitref.org/remotes/#push>push</a>, eu configurei um hook-http no repositório <a href="http://github.com/skhaz/nullonerror-posts" alt="nullonerror-posts">nullonerror-posts</a>, esse hook, envia um arquivo <a href="http://en.wikipedia.org/wiki/JSON">JSON</a>  via <a href="http://en.wikipedia.org/wiki/POST_(HTTP)">POST</a>, contendo todas as informações sobre o commit, mas o que realmente importa é quais foram os arquivos modificados ou adicionados ao repositório, com esses dados em mãos, o app baixa esses arquivos e faz um <a href="http://en.wikipedia.org/wiki/Parsing">parse</a> deles, salva no banco e da um flush no cache, está é a parte do código responsável:
+</p>
+
+<br />
+
+{% code 'python' %}
+class HookHandler(webapp2.RequestHandler):
+	def post(self):
+		try:
+			payload = json.loads(self.request.get("payload"))
+		except:
+			logging.error("failed to parse JSON")
+		else:
+			for commit in payload["commits"]:
+				for action, files  in commit.iteritems():
+					if action in ["added", "modified"]:
+						for filename in files:
+							self.add_or_update_entry(filename)
+					elif action in ["removed"]:
+						for filename in files:
+							self.delete_entry(filename)
+		finally:
+			memcache.flush_all()
+
+	def add_or_update_entry(self, filename):
+		basename, extension = os.path.splitext(filename)
+		if extension in [".entry", ".meta"]:
+			result = urlfetch.fetch(url = build_url(filename))
+			if result.status_code == 200:
+				entry = Entry.get_or_insert(basename)
+				if extension.endswith(".entry"):
+					entry.content = jinja2_env.from_string(result.content.decode('utf-8')).render()
+				else:
+					try:
+						meta = yaml.load(result.content)
+					except:
+						logging.error("failed to parse YAML")
+					else:
+						entry.title = meta["name"]
+
+				entry.slug = basename
+				entry.put()
+			else:
+				logging.error("failed to fetch %s" % filename)
+{% endcode %}
+
+<p>
+Já a hospedagem das images, usei a API do <a href="http://imgur.com/" alt="imgur">imgur</a>, para isso, criei uma extensão para o <a href="http://github.com/skhaz/nullonerror/blob/master/imgur_extension.py" alt="jinja2">jinja2</a>, que ao encontrar a tag "blobimage", monta a url e envia para a API, que trata de baixar a imagem e me retorna uma url, com essa url, basta eu fazer uma troca pela tag <i>img</i> pela nova url, como por exemplo, a imagem abaixo.
+</p>
+
+<p>
+{% blobimage src="assets/0x0001/post.png" %}
+</p>
+
+<p>
+F.A.Q.
+</p>
+<p>
+P. E o que acontece se você não ter o git instalado?<br />
+R. Eu posso usar o editor online do github :D<br />
+</p>
+
+<p>
+P. Legal a ideia, você que inventou?<br />
+R. Não, na época quando eu li a notícia, que o github passaria a suportar hooks via HTTP, eu já imaginei que daria para fazer algo do tipo, se você googlar um pouco, vai ver que existe outros projetos do tipo, e muito melhores que o meu :)<br />
+</p>
+
+<p>
+P. Não é reinventar a roda isso?<br />
+R. Sim, mas o principal propósito foi em aprender mais sobre o Google App Engine [code.google.com/appengine/]<br />
+</p>
+
+<p>
+P. Porque você não usou o próprio appengine para hospedar as imagens?<br />
+R. Porque é "pago" (na verdade é free, mas tem que ter google checkout com um cartão de cretido válido)<br /?
+</p>
+
+<p>
+P. E quanto a seguraça?<br />
+R. Bom... nada é nem mesmo 90% seguro, mas como esse sistemas não tem nenhuma  entrada de dados a não ser pelo github, acho que tem um nivel razoável de segurança, Sem contar é claro na possibilidade de alguem descobrir minhas senhas :P<br />
+</p>
+
+<p>
+P. Porque nullonerror?<br />
+R. Tive essa ideia há alguns meses atrás, enquanto lia a API do libVLC, sem contar que várias APIs em C/C++ retornam nulo quando há algum erro.<br />
+</p>
+
+<p>
+Código fonte <a href="https://github.com/skhaz/nullonerror">https://github.com/skhaz/nullonerror</a>
+</p>
+
+<p>
+Ciao!
+</p>
+
