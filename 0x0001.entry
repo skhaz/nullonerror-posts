@@ -1,7 +1,7 @@
 <p>
 Algumas pessoas me perguntaram como funciona esse "blog", para aqueles que estavam curiosos, aqui vai um micro-artigo sobre isso.
 </p>
-
+<br />
 <p>
 Para escrever uma nova entrada no blog, e necessário dois arquivos, um com a extensão .entry, que contem a entrada em si, e um com a extensão .meta, que contem informações do tipo título, tags e etc, após salvar e adicionar no repositório, após a operação de <a href="http://gitref.org/remotes/#push>push</a>, eu configurei um hook-http no repositório <a href="http://github.com/skhaz/nullonerror-posts" alt="nullonerror-posts">nullonerror-posts</a>, esse hook, envia um arquivo <a href="http://en.wikipedia.org/wiki/JSON">JSON</a>  via <a href="http://en.wikipedia.org/wiki/POST_(HTTP)">POST</a>, contendo todas as informações sobre o commit, mas o que realmente importa é quais foram os arquivos modificados ou adicionados ao repositório, com esses dados em mãos, o app baixa esses arquivos e faz um <a href="http://en.wikipedia.org/wiki/Parsing">parse</a> deles, salva no banco e da um flush no cache, está é a parte do código responsável:
 </p>
@@ -52,7 +52,7 @@ class HookHandler(webapp2.RequestHandler):
 <p>
 Já a hospedagem das images, usei a API do <a href="http://imgur.com/" alt="imgur">imgur</a>, para isso, criei uma extensão para o <a href="http://github.com/skhaz/nullonerror/blob/master/imgur_extension.py" alt="jinja2">jinja2</a>, que ao encontrar a tag "blobimage", monta a url e envia para a API, que trata de baixar a imagem e me retorna uma url, com essa url, basta eu fazer uma troca pela tag <i>img</i> pela nova url, como por exemplo, a imagem abaixo.
 </p>
-
+<br />
 <p>
 {% blobimage src="assets/0x0001/post.png" %}
 </p>
@@ -60,6 +60,7 @@ Já a hospedagem das images, usei a API do <a href="http://imgur.com/" alt="imgu
 <p>
 F.A.Q.
 </p>
+<br />
 <p>
 P. E o que acontece se você não ter o git instalado?<br />
 R. Eu posso usar o editor online do github :D<br />
@@ -90,10 +91,11 @@ P. Porque nullonerror?<br />
 R. Tive essa ideia há alguns meses atrás, enquanto lia a API do libVLC, sem contar que várias APIs em C/C++ retornam nulo quando há algum erro.<br />
 </p>
 
+<br />
 <p>
 Código fonte <a href="https://github.com/skhaz/nullonerror">https://github.com/skhaz/nullonerror</a>
 </p>
-
+<br />
 <p>
 Ciao!
 </p>
