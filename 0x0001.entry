@@ -91,7 +91,7 @@ R. Bom... nada é nem mesmo 90% seguro, mas como esse sistemas não tem nenhuma 
 <br />
 <p>
 P. Porque nullonerror?<br />
-R. Tive essa ideia há alguns meses atrás, enquanto lia a API do libVLC, sem contar que várias APIs em C/C++ retornam nulo quando há algum erro.<br />
+R. Tive essa ideia há alguns meses atrás, enquanto lia a API do VLC, sem contar que várias APIs em C/C++ retornam nulo quando há algum erro.<br />
 </p>
 
 <br />
