@@ -56,11 +56,10 @@ Já a hospedagem das images, usei a API do <a href="http://imgur.com/" alt="imgu
 <p>
 {% blobimage src="assets/0x0001/post.png" %}
 </p>
-
+<br />
 <p>
 F.A.Q.
 </p>
-<br />
 <p>
 P. E o que acontece se você não ter o git instalado?<br />
 R. Eu posso usar o editor online do github :D<br />
