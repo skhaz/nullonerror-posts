@@ -70,8 +70,68 @@ Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
 {% imgur src="assets/0x0003/qtgps.png" %}
 <br />
 <p>
-Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distintas? 
-########################################################################################################
+Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distintas? Essa é uma boa pergunta, mas antes de tudo, vou mostrar a diferença entre fazer um <a href="http://en.wikipedia.org/wiki/Language_binding">bind</a> usando luabind e Qt
+</p>
+<br />
+
+<div>
+<div style="float: left;  width: 50%;">
+{% code 'cpp' %}
+using namespace luabind;
+luabind::open(L);
+
+module(L)
+[
+  class_<IODevice>("IODevice")
+    .enum_("OpenMode")
+    [
+      value("ReadOnly", 2),
+      value("ReadWrite", 4),
+      value("Append", 8),
+      value("Text", 16)
+    ],
+    class_<File, IODevice>("File")
+    .def(constructor<const String &>())
+    .def("open", &File::open)
+    .def("length", &File::length)
+    .def("eof", &File::eof)
+    .def("seek", &File::seek)
+    .def("tell", &File::tell)
+];
+{% endcode %}
+<div style="text-align: center;">Exemplo usando luabind</div>
+<div style="text-align: center;">gentilmente fornecido pelo pessoal do Wintermoon :)</div>
+</div>
+<div style="float: right; width: 50%;">
+{% code 'cpp' %}
+class SumDelegate : public QObject
+{
+    public:
+        explicit SumDelegate(QObject *parent = 0);
+
+    public slots:
+        void process(const QVariant& param1, const QVariant& param2);
+
+    signals:
+        void result(QVariant);
+
+        void error(QString);
+
+    private:
+        Q_OBJECT
+};
+{% endcode %}
+<div style="text-align: center;">Exemplo em Qt</div>
+</div>
+</div>
+<div style="clear: both;">
+</div>
+</div>
+
+
+<a href="http://developer.qt.nokia.com/doc/qt-4.8/moc.html">Meta-Object Compiler</a> ou MOC para os íntimos
+
+
 </p>
 <p>
 Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim
