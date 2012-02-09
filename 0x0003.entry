@@ -71,7 +71,7 @@ Resultando na imagem abaixo
 Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o numero de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicionar um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, no final a classe vai ficar mais ou menos assim:
 </p>
 
-<pre>
+{% code 'cpp' %}
 class SumDelegate : public QObject
 {
    public:
@@ -87,13 +87,13 @@ class SumDelegate : public QObject
    private:
        Q_OBJECT
 };
-</pre>
+{% endcode %}
 
 <p>
 e a sua implementação dessa maneira
 </p>
 
-<pre>
+{% code 'cpp' %}
 SumDelegate::SumDelegate(QObject *parent)
 : QObject(parent)
 {
@@ -115,7 +115,7 @@ void SumDelegate::process(const QVariant& param1, const QVariant& param2)
    }
    emit result(QVariant::fromValue(value1 + value2));
 }
-</pre>
+{% endcode %}
 
 <p>
 Note que eu tenho um sinal adicional, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes.
