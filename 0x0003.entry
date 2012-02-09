@@ -68,10 +68,8 @@ Tudo isso para...
 </p>
 <br />
 {% blobimage src="assets/0x0003/result.png" %}
-<br />
-
 <center><i>Divertido, nao? ;)</i></center>
-
+<br />
 <p>
 Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim:
 </p>
@@ -152,7 +150,7 @@ O número (proveniente <a href="http://developer.qt.nokia.com/doc/qt-4.8/qmetame
 </p>
 <br />
 <p>
-Bom... O propósito dessa <i><a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a></i> é colher informações sobre as classes e assim poder gerar código em JavaScript, a ideia é fazer algo como no <a href="http://pipes.yahoo.com/" title="Yahoo Pipes">Yahoo Pipes</a>, sendo que, para cada classe que for registrada no nosso sistema, ela passará a ser um componente visual, os seus slots serão a entrada de dados, seja lá quantos forem, e o sinal <i>result</i> é a saída, a imagem a baixo pode ilustrar melhor a ideia
+O propósito dessa <i><a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a></i> é colher informações sobre as classes e assim poder gerar código em JavaScript, a ideia é fazer algo como no <a href="http://pipes.yahoo.com/" title="Yahoo Pipes">Yahoo Pipes</a>, sendo que, para cada classe que for registrada no nosso sistema, ela passará a ser um componente visual, os seus slots serão a entrada de dados, seja lá quantos forem, e o sinal <i>result</i> é a saída, a imagem a baixo pode ilustrar melhor a ideia
 </p>
 <br />
 {% blobimage src="assets/0x0003/pipes.png" %}
@@ -181,7 +179,8 @@ Form::Form(QWidget *parent)
 No construtor apenas conectamos o sinal <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebframe.html#javaScriptWindowObjectCleared" title="javaScriptWindowObjectCleared">javaScriptWindowObjectCleared</a> ao slot <i>addObject</i> da nossa classe, esse sinal é emitido sempre no inicio do carregamento do conteúdo da pagina, sendo assim, nosso objeto já estará pronto para ser usado
 <p>
 <br />
-e o slot addObject assim
+e o slot addObject
+<br />
 <br />
 {% code 'cpp' %}
 void Form::addObject()
@@ -212,7 +211,6 @@ Como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, o res
 <p>
 Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando...
 </p>
-<br />
 <p>
 Se algo não ficou claro... criticas e/ou sugestões deixe nos comentários :)
 </p>
