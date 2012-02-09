@@ -63,7 +63,10 @@ void MainWindow::update(double latitude, double longitude)
 }
 {% endcode %}
 
-<br />
+<p>
+O resultado pode ser visto na imagem abaixo
+</p>
+
 {% blobimage src="assets/0x0003/qtgps.png" %}
 <br />
 <p>
@@ -199,8 +202,7 @@ sumDelegate.process(140, 100);
 {% endcode %}
 
 <p>
-como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, o resultado pode ser visto na imagem abaixo
-</p>
+como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, tudo isso para...</p>
 <br />
 {% blobimage src="assets/0x0003/result.png" %}
 <center><i>Divertido, nao? ;)</i></center>
