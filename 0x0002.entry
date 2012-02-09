@@ -80,7 +80,9 @@ Bom, é isso aí, o código fonte está <a href="https://github.com/skhaz/qt-you
 O resultado pode ser visto no vídeo a seguir
 </p>
 <br />
-<center><iframe width="640" height="480" src="http://www.youtube.com/embed/pYhqVsZ6fN8" frameborder="0" allowfullscreen></iframe></center>
+<center>
+<object width="480" height="360"><param name="movie" value="http://www.youtube-nocookie.com/v/pYhqVsZ6fN8?version=3&amp;hl=pt_BR&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube-nocookie.com/v/pYhqVsZ6fN8?version=3&amp;hl=pt_BR&amp;rel=0" type="application/x-shockwave-flash" width="480" height="360" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+</center>
 <br />
 <p>
 1 - Trolls eu me refiro aos funcionários da ex-trolltech, e não ao meme.<br />
