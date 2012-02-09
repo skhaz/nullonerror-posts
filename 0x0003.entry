@@ -102,6 +102,7 @@ module(L)
 <div style="text-align: center;">Exemplo usando luabind</div>
 <div style="text-align: center;">gentilmente fornecido pelo pessoal do Wintermoon :)</div>
 </div>
+<div style="width: 15px;"></div>
 <div style="float: right; width: 50%;">
 {% code 'cpp' %}
 
