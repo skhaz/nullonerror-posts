@@ -104,6 +104,7 @@ module(L)
 </div>
 <div style="float: right; width: 50%;">
 {% code 'cpp' %}
+
 class SumDelegate : public QObject
 {
     public:
