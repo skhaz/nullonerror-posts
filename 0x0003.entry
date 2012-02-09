@@ -3,7 +3,7 @@ O objetivo desse artigo será em demonstrar como criar uma aplicação híbrida 
 </p>
 <br />
 <p>
-Um exemplo de aplicação híbrida que fiz há aproximadamente 1 ano, que consistia em abrir uma pagina em HTML e dentro dessa pagina, usando a <a href="http://code.google.com/apis/maps/documentation/javascript/v2/reference.html" title="Google Maps API">API do google maps</a>, do outro lado, criei um cliente simples do <a href="http://en.wikipedia.org/wiki/Daemon_(computing)" title="daemon">daemon</a> <a href="http://www.catb.org/gpsd/" title="gpsd">gpsd</a> que funcionava via socket TCP, pela porta 2948, assim que a conexão era estabelecida, basicamente era escrever a mensagem
+Um exemplo de aplicação híbrida que fiz há aproximadamente um ano, que consistia em abrir uma pagina em HTML e dentro dessa pagina, usando a <a href="http://code.google.com/apis/maps/documentation/javascript/v2/reference.html" title="Google Maps API">API do google maps</a>, do outro lado, criei um cliente simples do <a href="http://en.wikipedia.org/wiki/Daemon_(computing)" title="daemon">daemon</a> <a href="http://www.catb.org/gpsd/" title="gpsd">gpsd</a> que funcionava via socket TCP, ouvindo a porta 2948, assim que a conexão era estabelecida, basicamente era escrever a mensagem
 <p>
 <br />
 {% code 'cpp' %}
@@ -53,24 +53,24 @@ E trecho de código abaixo (simplificado), é o que gera código em JavaScript e
 {% code 'cpp' %}
 void MainWindow::update(double latitude, double longitude)
 {
-	QStringList code;
+    QStringList code;
     code << QString("var pos = new GLatLng(%1, %2);").arg(latitude).arg(longitude);
     code << "map.setCenter(pos, 19);";
     code << "var marker = new GMarker(pos);";
     code << "map.addOverlay(marker);";
 
-	view->page()->mainFrame()->evaluateJavaScript(code.join("\n"));
+    view->page()->mainFrame()->evaluateJavaScript(code.join("\n"));
 }
 {% endcode %}
 
 <p>
-Resultando na imagem abaixo
+Resultando
 </p>
 <br />
 {% blobimage src="assets/0x0003/result.png" %}
 <br />
 <p>
-Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o numero de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicionar um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, no final a classe vai ficar mais ou menos assim:
+Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim:
 </p>
 <br />
 {% code 'cpp' %}
@@ -115,16 +115,13 @@ void SumDelegate::process(const QVariant& param1, const QVariant& param2)
        emit error(QString("Invalid number!"));
        return;
    }
+
    emit result(QVariant::fromValue(value1 + value2));
 }
 {% endcode %}
 
 <p>
-Note que eu tenho um sinal adicional, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes.
-</p>
-<br />
-<p>
-A próxima etapa é registrar essas classes e conseguir, de alguma maneira, fazer uma <a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a> nos sinais e slots, algo como esse trecho de código
+Note que eu adicionei um sinal extra, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes. A próxima etapa consiste em registrar essas classes e conseguir, de alguma maneira, fazer uma <a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a> (ou reflexão, como preferir) pelos sinais e slots, vai ser algo como esse trecho de código
 </p>
 <br />
 {% code 'cpp' %}
@@ -138,7 +135,7 @@ void registerDelegate() {
 {% endcode %}
 
 <p>
-Que nos retorna uma saída parecida com essa
+Que nos vai retornar uma saída parecida com essa
 </p>
 <br />
 {% code 'cpp' %}
@@ -148,7 +145,7 @@ Que nos retorna uma saída parecida com essa
 {% endcode %}
 
 <p>
-O numero que está na frente da assinatura do método, e o tipo dele, se é um sinal, um slot, ou mesmo um construtor, fazendo isso dá até para saber se é público, protegido ou privado, e também quem herdou, listar os enumeradores, entre outras coisas, se quiser saber um pouco mais sobre esse recurso, esse <a href="http://developer.qt.nokia.com/doc/qt-4.8/metaobjects.html" title="Qt Meta-Object System">link</a> contêm mais informações... Enfim, o sistema de meta objetos do Qt é realmente muito poderoso :)
+O número (proveniente <a href="http://developer.qt.nokia.com/doc/qt-4.8/qmetamethod.html#MethodType-enum">desse enumerador</a>_ que está na frente da assinatura do método, é o tipo dele, se é um sinal, um slot, ou mesmo um construtor, fazendo isso dá até para saber se é público, protegido ou privado, e também quem herdou, listar os enumeradores, entre outras coisas, se quiser saber um pouco mais sobre esse recurso, esse <a href="http://developer.qt.nokia.com/doc/qt-4.8/metaobjects.html" title="Qt Meta-Object System">link</a> contêm mais informações... Enfim, o sistema de meta objetos do Qt é realmente muito poderoso :)
 </p>
 <br />
 <p>
