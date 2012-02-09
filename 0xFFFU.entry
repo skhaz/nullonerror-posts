@@ -1,5 +1,5 @@
 
 <p>
-  {% imgur_ src="assets/0xFFFU/fffu.png" %}
+  {% imgur src="assets/0xFFFU/fffu.png" %}
 </p>
 <br />

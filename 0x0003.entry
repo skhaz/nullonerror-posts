@@ -67,7 +67,7 @@ void MainWindow::update(double latitude, double longitude)
 Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
 </p>
 <br />
-{% imgur_ src="assets/0x0003/qtgps.png" %}
+{% imgur src="assets/0x0003/qtgps.png" %}
 <br />
 <p>
 Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distintas? 
@@ -156,7 +156,7 @@ O número (proveniente <a href="http://developer.qt.nokia.com/doc/qt-4.8/qmetame
 O propósito dessa <i><a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a></i> é colher informações sobre as classes e assim poder gerar código em JavaScript, a ideia é fazer algo como no <a href="http://pipes.yahoo.com/" title="Yahoo Pipes">Yahoo Pipes</a>, sendo que, para cada classe que for registrada no nosso sistema, ela passará a ser um componente visual, os seus slots serão a entrada de dados, seja lá quantos forem, e o sinal <i>result</i> é a saída, a imagem a baixo pode ilustrar melhor a ideia
 </p>
 <br />
-{% imgur_ src="assets/0x0003/pipes.png" %}
+{% imgur src="assets/0x0003/pipes.png" %}
 <center><i>Imagem retirada de um dos exemplos do <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a></i></center>
 <br />
 <p>
@@ -208,7 +208,7 @@ sumDelegate.process(140, 100);
 <p>
 como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, "tudo" isso para...</p>
 <br />
-{% imgur_ src="assets/0x0003/result.png" %}
+{% imgur src="assets/0x0003/result.png" %}
 <center><i>Divertido, nao? ;)</i></center>
 <br />
 <p>
