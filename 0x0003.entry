@@ -70,6 +70,10 @@ Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
 {% blobimage src="assets/0x0003/qtgps.png" %}
 <br />
 <p>
+Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distintas? 
+########################################################################################################
+</p>
+<p>
 Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim
 </p>
 <br />
@@ -209,6 +213,11 @@ como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, "tudo
 <br />
 <p>
 Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando... Se algo não ficou claro deixe criticas e/ou sugestões deixe nos comentários :)
+</p>
+<br />
+
+<p>
+Agradecimentos especiais aos meus amigos <a href="https://twitter.com/#!/AndreiRegiani">Andrei Regiani</a>, <a href="http://twitter.com/#!/guilffer">Guilherme (a.k.a. guilffer)</a>, <a href="http://twitter.com/#!/n2liquid">Guilherme (a.k.a. n2liquid)</a> e <a href="https://www.facebook.com/lineufelipe">Lineu Felipe</a> pela revisão e dicas ;D
 </p>
 <br />
 <p>
