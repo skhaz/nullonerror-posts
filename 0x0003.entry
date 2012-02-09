@@ -203,20 +203,17 @@ sumDelegate.process(140, 100);
 {% endcode %}
 
 <p>
-Como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, o resultado pode ser visto na imagem abaixo
+como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, o resultado pode ser visto na imagem abaixo
 </p>
 <br />
 {% blobimage src="assets/0x0003/result.png" %}
 <br />
 <p>
-Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando...
-</p>
-<p>
-Se algo não ficou claro... criticas e/ou sugestões deixe nos comentários :)
+Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando... Se algo não ficou claro deixe criticas e/ou sugestões deixe nos comentários :)
 </p>
 <br />
 <p>
-Até lá!
+Até lá, obrigado!
 </p>
 <br />
 <br />
