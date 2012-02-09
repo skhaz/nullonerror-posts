@@ -15,7 +15,7 @@ e logo em seguida o GPSD passa a enviar o protocolo <a href="http://www.gpsinfor
 </p>
 <br />
 <p>
-No html temos
+Vou fazer uma breve explicação de como funciona isso, no html temos
 </p>
 <br />
 {% code 'html' %}
@@ -64,9 +64,9 @@ void MainWindow::update(double latitude, double longitude)
 {% endcode %}
 
 <p>
-O resultado pode ser visto na imagem abaixo
+Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
 </p>
-
+<br />
 {% blobimage src="assets/0x0003/qtgps.png" %}
 <br />
 <p>
@@ -202,7 +202,7 @@ sumDelegate.process(140, 100);
 {% endcode %}
 
 <p>
-como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, tudo isso para...</p>
+como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, "tudo" isso para...</p>
 <br />
 {% blobimage src="assets/0x0003/result.png" %}
 <center><i>Divertido, nao? ;)</i></center>
