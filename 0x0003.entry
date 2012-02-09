@@ -9,7 +9,6 @@ Um exemplo de aplicação híbrida que fiz há aproximadamente 1 ano, que consis
 {% code 'cpp' %}
 ?WATCH={"nmea" : true}"
 {% endcode %}
-<br />
 
 <p>
 e logo em seguida o GPSD passa a enviar o protocolo <a href="http://www.gpsinformation.org/dale/nmea.htm" title="NMEA">NMEA</a>, contendo vários dados, mas o que realmente importa é a latitude e longitude. Engraçado só hoje fui descobrir que eu poderia, ao invés de receber o protocolo NMEA, receber um JSON, e nem teria que fazer o parser, poderia enviar diretamente para o JavaScript rodando no QWebframe, quem sabe <a href="https://github.com/skhaz/qtgps" title="código fonte aqui!">algum dia eu "refatoro" o código...</a>
@@ -46,7 +45,7 @@ No html temos
   </body>
 </html>
 {% endcode %}
-<br />
+
 <p>
 E trecho de código abaixo (simplificado), é o que gera código em JavaScript e roda na VM, o slot <i>update</i> recebe a todo momento as coordenadas vindas da classe cliente do GPSD
 </p>
@@ -63,7 +62,7 @@ void MainWindow::update(double latitude, double longitude)
 	view->page()->mainFrame()->evaluateJavaScript(code.join("\n"));
 }
 {% endcode %}
-<br />
+
 <p>
 Resultando na imagem abaixo
 </p>
@@ -91,7 +90,7 @@ class SumDelegate : public QObject
        Q_OBJECT
 };
 {% endcode %}
-<br />
+
 <p>
 e a sua implementação dessa maneira
 </p>
@@ -119,7 +118,7 @@ void SumDelegate::process(const QVariant& param1, const QVariant& param2)
    emit result(QVariant::fromValue(value1 + value2));
 }
 {% endcode %}
-<br />
+
 <p>
 Note que eu tenho um sinal adicional, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes.
 </p>
@@ -137,7 +136,7 @@ void registerDelegate() {
     }
 }
 {% endcode %}
-<br />
+
 <p>
 Que nos retorna uma saída parecida com essa
 </p>
@@ -147,7 +146,7 @@ Que nos retorna uma saída parecida com essa
 1 error(QString)
 2 process(QVariant,QVariant)
 {% endcode %}
-<br />
+
 <p>
 O numero que está na frente da assinatura do método, e o tipo dele, se é um sinal, um slot, ou mesmo um construtor, fazendo isso dá até para saber se é público, protegido ou privado, e também quem herdou, listar os enumeradores, entre outras coisas, se quiser saber um pouco mais sobre esse recurso, esse <a href="http://developer.qt.nokia.com/doc/qt-4.8/metaobjects.html" title="Qt Meta-Object System">link</a> contêm mais informações... Enfim, o sistema de meta objetos do Qt é realmente muito poderoso :)
 </p>
@@ -177,7 +176,7 @@ Form::Form(QWidget *parent)
    connect(page->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addObject()));
 }
 {% endcode %}
-<br />
+
 <p>
 No construtor apenas conectamos o sinal <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebframe.html#javaScriptWindowObjectCleared" title="javaScriptWindowObjectCleared">javaScriptWindowObjectCleared</a> ao slot <i>addObject</i> da nossa classe, esse sinal é emitido sempre no inicio do carregamento do conteúdo da pagina, sendo assim, nosso objeto já estará pronto para ser usado
 <p>
@@ -191,7 +190,7 @@ void Form::addObject()
    frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 }
 {% endcode %}
-<br />
+
 <p>
 o primeiro parâmetro é o nome da instância do nosso objeto no JavaScript, já o segundo, se trata da instância em si. Já o código em JavaScript da página ficou assim
 </p>
@@ -203,7 +202,7 @@ sumDelegate.result.connect(this, function(data) {
 
 sumDelegate.process(140, 100);
 {% endcode %}
-<br />
+
 <p>
 Como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, o resultado pode ser visto na imagem abaixo
 </p>
