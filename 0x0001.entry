@@ -69,14 +69,14 @@ class HookHandler(webapp2.RequestHandler):
 {% endcode %}
 <p>
  Já a hospedagem das images, usei a API do
- <a href="http://imgur.com/" alt="imgur">
-  imgur
+ <a href="http://imgur_.com/" alt="imgur_">
+  imgur_
  </a>
  , para isso, criei uma extensão para o
- <a href="http://github.com/skhaz/nullonerror/blob/master/imgur_extension.py" alt="jinja2">
+ <a href="http://github.com/skhaz/nullonerror/blob/master/imgur__extension.py" alt="jinja2">
   jinja2
  </a>
- , que ao encontrar a tag "imgur", monta a url e envia para a API, que trata de baixar a imagem e me retorna uma url, com essa url, basta eu fazer uma troca pela tag
+ , que ao encontrar a tag "imgur_", monta a url e envia para a API, que trata de baixar a imagem e me retorna uma url, com essa url, basta eu fazer uma troca pela tag
  <i>
   img
  </i>
@@ -84,7 +84,7 @@ class HookHandler(webapp2.RequestHandler):
 </p>
 <br />
 <p>
- {% imgur src="assets/0x0001/post.png" %}
+ {% imgur_ src="assets/0x0001/post.png" %}
 </p>
 <br />
 <p>
