@@ -64,11 +64,14 @@ void MainWindow::update(double latitude, double longitude)
 {% endcode %}
 
 <p>
-Resultando
+Tudo isso para...
 </p>
 <br />
 {% blobimage src="assets/0x0003/result.png" %}
 <br />
+
+<center><i>Divertido, nao? ;)</i></center>
+
 <p>
 Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim:
 </p>
@@ -145,7 +148,7 @@ Que nos vai retornar uma saída parecida com essa
 {% endcode %}
 
 <p>
-O número (proveniente <a href="http://developer.qt.nokia.com/doc/qt-4.8/qmetamethod.html#MethodType-enum">desse enumerador</a>_ que está na frente da assinatura do método, é o tipo dele, se é um sinal, um slot, ou mesmo um construtor, fazendo isso dá até para saber se é público, protegido ou privado, e também quem herdou, listar os enumeradores, entre outras coisas, se quiser saber um pouco mais sobre esse recurso, esse <a href="http://developer.qt.nokia.com/doc/qt-4.8/metaobjects.html" title="Qt Meta-Object System">link</a> contêm mais informações... Enfim, o sistema de meta objetos do Qt é realmente muito poderoso :)
+O número (proveniente <a href="http://developer.qt.nokia.com/doc/qt-4.8/qmetamethod.html#MethodType-enum">desse enumerador</a>) que está na frente da assinatura do método, é o tipo dele, se é um sinal, um slot, ou mesmo um construtor, fazendo isso dá até para saber se é público, protegido ou privado, e também quem herdou, listar os enumeradores, entre outras coisas, se quiser saber um pouco mais sobre esse recurso, esse <a href="http://developer.qt.nokia.com/doc/qt-4.8/metaobjects.html" title="Qt Meta-Object System">link</a> contêm mais informações... Enfim, o sistema de meta objetos do Qt é realmente muito poderoso :)
 </p>
 <br />
 <p>
