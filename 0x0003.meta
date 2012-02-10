@@ -1,4 +1,4 @@
 name: Aplicações híbrida - Introdução
-public: No
-tags: [C++, Qt, WebKit, JavaScript]
+public: Yes
+tags: [C++, Qt, WebKit, JavaScript, Lua, Luabind]
 
