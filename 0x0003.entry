@@ -79,7 +79,7 @@ Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distint
 {% code 'cpp' %}
 /*
  * Exemplo usando luabind
- * gentilmente fornecido pelo pessoal do Wintermoon :)
+ * cedido gentilmente pelo pessoal do Wintermoon :)
  */
 
 using namespace luabind;
@@ -127,6 +127,12 @@ class SumDelegate : public QObject
     private:
         Q_OBJECT
 };
+
+
+
+
+
+
 {% endcode %}
 </div>
 <div style="clear: both;">
