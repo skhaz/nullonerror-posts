@@ -141,10 +141,9 @@ frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 </div>
 
 <p>
-Deu para notar a diferença não? Na versão usando luabind além de ter que implementar a classe IODevice, ainda tive o trabalho de "expor" todos os métodos, construtores, enumeradores, além do mais, o luabind faz uso intensivo do <a href="http://www.boost.org/doc/libs/1_48_0/libs/mpl/doc/index.html">boost.mpl</a> que auxilia na hora de descobrir propriedades da classe, mas como é praticamente tudo resolvido em <a href="http://en.wikipedia.org/wiki/Compile_time">tempo de compilação</a> o tempo de compilação se estende um pouco, se você ficou curioso e quer conhecer outras alternativas para criar "pontes" para lua, recomendo <a href="http://realmensch.org/blog/fun-lua-bindings">esse post</a>
-
-
- o <a href="http://developer.qt.nokia.com/doc/qt-4.8/moc.html">Meta-Object Compiler</a> ou MOC para os íntimos, nos poupou de um baita trabalho
+Deu para notar a diferença não? Na versão usando luabind além de ter que implementar a classe IODevice, ainda tive o trabalho de "expor" todos os métodos, construtores, enumeradores, além do mais, o luabind faz uso intensivo do <a href="http://www.boost.org/doc/libs/1_48_0/libs/mpl/doc/index.html">boost.mpl</a> que auxilia na hora de descobrir propriedades da classe, mas como é praticamente tudo resolvido em <a href="http://en.wikipedia.org/wiki/Compile_time">tempo de compilação</a> o tempo de compilação se estende um pouco, se você ficou curioso e quer conhecer outras alternativas para criar "pontes" para lua, recomendo <a href="http://realmensch.org/blog/fun-lua-bindings">esse post</a>.
+</p>
+A versao em Qt é bem mais simplificada graças a esse cara, o <a href="http://developer.qt.nokia.com/doc/qt-4.8/moc.html">Meta-Object Compiler</a> ou MOC para os íntimos, nos poupou de um baita trabalho
 <br />
 </p>
 <p>
