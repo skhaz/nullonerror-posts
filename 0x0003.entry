@@ -3,7 +3,7 @@ O objetivo desse artigo será em demonstrar como criar uma aplicação híbrida 
 </p>
 <br />
 <p>
-Um exemplo de aplicação híbrida que fiz há aproximadamente um ano, que consistia em abrir uma pagina em HTML e dentro dessa pagina, usando a <a href="http://code.google.com/apis/maps/documentation/javascript/v2/reference.html" title="Google Maps API">API do google maps</a>, do outro lado, criei um cliente simples do <a href="http://en.wikipedia.org/wiki/Daemon_(computing)" title="daemon">daemon</a> <a href="http://www.catb.org/gpsd/" title="gpsd">gpsd</a> que funcionava via socket TCP, ouvindo a porta 2948, assim que a conexão era estabelecida, basicamente era escrever a mensagem
+Um exemplo de aplicação híbrida que fiz há aproximadamente um ano, que consistia em abrir uma pagina em HTML e dentro dessa pagina, usando a <a href="http://code.google.com/apis/maps/documentation/javascript/v2/reference.html" title="Google Maps API">API do google maps</a>, do outro lado, criei um cliente simples do <a href="http://en.wikipedia.org/wiki/Daemon_(computing)" title="daemon">daemon</a> <a href="http://www.catb.org/gpsd/" title="gpsd">gpsd</a> que funcionava via socket TCP, ouvindo na porta 2948, assim que a conexão era estabelecida, basicamente era escrever a mensagem
 <p>
 <br />
 {% code 'cpp' %}
