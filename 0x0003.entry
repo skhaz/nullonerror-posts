@@ -82,6 +82,8 @@ Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distint
  * cedido gentilmente pelo pessoal do Wintermoon :)
  */
 
+#include "IODevice.h" // Apenas para economizar espaço :P
+
 using namespace luabind;
 luabind::open(L);
 
@@ -130,7 +132,6 @@ class SumDelegate : public QObject
 
 // Todo objeto que herda QObject e faz uso da macro Q_OBJECT
 // passa a ser visível para o "Meta-Object System", explico isso logo abaixo
-
 QWebFrame *frame = ui->webView->page()->mainFrame();
 frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 {% endcode %}
@@ -139,10 +140,12 @@ frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 </div>
 </div>
 
+<p>
+Deu para notar a diferença não? Na versão usando luabind além de ter que implementar a classe IODevice, ainda tive o trabalho de "expor" todos os métodos, construtores, enumeradores, além do mais, o luabind faz uso intensivo do <a href="http://www.boost.org/doc/libs/1_48_0/libs/mpl/doc/index.html">boost.mpl</a> que auxilia na hora de descobrir propriedades da classe, mas como é praticamente tudo resolvido em <a href="http://en.wikipedia.org/wiki/Compile_time">tempo de compilação</a> o tempo de compilação se estende um pouco, se você ficou curioso e quer conhecer outras alternativas para criar "pontes" para lua, recomendo <a href="http://realmensch.org/blog/fun-lua-bindings">esse post</a>
 
-<a href="http://developer.qt.nokia.com/doc/qt-4.8/moc.html">Meta-Object Compiler</a> ou MOC para os íntimos
 
-
+ o <a href="http://developer.qt.nokia.com/doc/qt-4.8/moc.html">Meta-Object Compiler</a> ou MOC para os íntimos, nos poupou de um baita trabalho
+<br />
 </p>
 <p>
 Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim
