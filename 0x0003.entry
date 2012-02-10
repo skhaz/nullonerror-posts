@@ -238,7 +238,7 @@ O propósito dessa <i><a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A
 <center><i>Imagem retirada de um dos exemplos do <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a></i></center>
 <br />
 <p>
-Agora temos que que criar uma ponte entre o código em Qt e a VM de JavaScript, isso é conhecido como <a href="http://developer.qt.nokia.com/doc/qt-4.8/qtwebkit-bridge.html" title="The QtWebKit Bridge">bridge</a>, nessa parte eu vou demonstrar um exemplo simples de como isso é feito
+Agora temos que que criar uma ponte entre o código em Qt e a VM de JavaScript, isso é conhecido como <a href="http://developer.qt.nokia.com/doc/qt-4.8/qtwebkit-bridge.html" title="The QtWebKit Bridge">bridge</a>, nessa parte eu vou demonstrar um exemplo simples de como isso é feito.
 </p>
 <br />
 <p>
@@ -260,7 +260,7 @@ Form::Form(QWidget *parent)
 No construtor apenas conectamos o sinal <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebframe.html#javaScriptWindowObjectCleared" title="javaScriptWindowObjectCleared">javaScriptWindowObjectCleared</a> ao slot <i>addObject</i> da nossa classe, esse sinal é emitido sempre no inicio do carregamento do conteúdo da pagina, sendo assim, nosso objeto já estará pronto para ser usado
 <p>
 <br />
-e o slot addObject
+e no slot <i>addObject</i>
 <br />
 <br />
 {% code 'cpp' %}
