@@ -130,8 +130,10 @@ class SumDelegate : public QObject
         Q_OBJECT
 };
 
+
 // Todo objeto que herda QObject e faz uso da macro Q_OBJECT
 // passa a ser visível para o "Meta-Object System", explico isso logo abaixo
+
 QWebFrame *frame = ui->webView->page()->mainFrame();
 frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 {% endcode %}
