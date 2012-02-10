@@ -75,7 +75,7 @@ Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distint
 <br />
 
 <div>
-<div style="margin: 20px; float: left;  width: 50%;">
+<div style="padding: 10px; float: left;  width: 50%;">
 {% code 'cpp' %}
 using namespace luabind;
 luabind::open(L);
@@ -102,7 +102,7 @@ module(L)
 <div style="text-align: center;">Exemplo usando luabind</div>
 <div style="text-align: center;">gentilmente fornecido pelo pessoal do Wintermoon :)</div>
 </div>
-<div style="margin: 20px; float: right; width: 50%;">
+<div style="padding: 10px; float: right; width: 50%;">
 {% code 'cpp' %}
 
 class SumDelegate : public QObject
