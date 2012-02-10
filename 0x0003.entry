@@ -130,9 +130,8 @@ class SumDelegate : public QObject
 
 
 
-
-
-
+QWebFrame *frame = ui->webView->page()->mainFrame();
+frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 {% endcode %}
 </div>
 <div style="clear: both;">
