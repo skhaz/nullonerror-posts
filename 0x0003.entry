@@ -1,4 +1,3 @@
-
 <p>
 O objetivo desse artigo será em demonstrar como criar uma aplicação híbrida usando HTML5 e Qt, mas antes disso, o que são aplicações híbridas? Aplicações híbridas são soluções que adotam uma ou mais tecnologias, por exemplo, o uso de HTML para interface, por ser mais fácil e mais rápido de implementar e código nativo para usar recursos não presentes no HTML5, como por exemplo, acesso ao sistema de arquivos, comprimir um vídeo, entre outras coisas... bom essa é a minha definição, se você tiver alguma melhor diga a nos comentários :)
 </p>
@@ -309,3 +308,4 @@ Até lá e obrigado!
 </p>
 <br />
 <br />
+
