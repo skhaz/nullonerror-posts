@@ -15,31 +15,31 @@ e logo em seguida o GPSD passa a enviar o protocolo <a href="http://www.gpsinfor
 Farei uma breve explicação de como funciona isso, no html temos
 </p>
 
-<pre><code><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<pre><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-  <title>Google Maps</title>
-  <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=GMAPS_KEY" type="text/javascript"></script>
-  <script type="text/javascript">
-  //<![CDATA[
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;
+  &lt;title&gt;Google Maps&lt;/title&gt;
+  &lt;script src=&quot;http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;key=GMAPS_KEY&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+  &lt;script type=&quot;text/javascript&quot;&gt;
+  //&lt;![CDATA[
   var map;
 
   function load() {
   if (GBrowserIsCompatible()) {
-      map = new GMap2(document.getElementById("map"));
+      map = new GMap2(document.getElementById(&quot;map&quot;));
       map.setUIToDefault();
     }
   }
-  //]]>
-  </script>
-  </head>
-  <body onload="load()" onunload="GUnload()" topmargin="0" leftmargin="0">
-    <div id="map" style="width: 800px; height: 600px"></div>
-  </body>
-</html></code></pre>
+  //]]&gt;
+  &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body onload=&quot;load()&quot; onunload=&quot;GUnload()&quot; topmargin=&quot;0&quot; leftmargin=&quot;0&quot;&gt;
+    &lt;div id=&quot;map&quot; style=&quot;width: 800px; height: 600px&quot;&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
 
 <p>
 E trecho de código abaixo (simplificado), é o que gera código em JavaScript e roda na VM, o slot <i>update</i> recebe a todo momento as coordenadas vindas da classe cliente do GPSD
@@ -119,9 +119,10 @@ class SumDelegate : public QObject
 };</code></pre>
 
 
-// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
+<pre><code>// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
 // passa a ser visível para o "Meta-Object System", explico isso logo abaixo
-<pre><code>QWebFrame *frame = ui->webView->page()->mainFrame();
+
+QWebFrame *frame = ui->webView->page()->mainFrame();
 frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 </code></pre>
 </div>
