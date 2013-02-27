@@ -1,3 +1,4 @@
+
 <p>
 Esse artigo vai trazer uma compilação dos meus estudos sobre multimídia no Qt usando a poderosa libVLC, mas antes de tudo, alguns já devem estar se
 perguntando "Porque usar o VLC sendo que o Qt já vem com o Phonon embarcado?", Essa é uma boa pergunta, o framework Phonon do projeto KDE é excelente
@@ -18,10 +19,10 @@ Minha primeira tentativa com a libVLC foi a mais simples possível, fiz um clone
 </p>
 <br />
 
-{% code 'cpp' %}
+<pre><code>
 MyVideoPlayer video;
 QGraphicsProxyWidget *proxy = scene.addWidget(&video);
-{% endcode %}
+</code></pre>
 
 <p>
 É... não funcionou, apenas para tirar teima, testei com um outro Widget qualquer, no caso, foi o QPushButton, e funcionou perfeitamente... Me debrucei na documentação do QGraphicsProxyWidget para tentar entender porque não havia funcionado com o meu widget, até que encontrei o seguinte trecho:
@@ -51,20 +52,20 @@ Vamos portar esse código para Qt então, ao invés de criar uma classe que herd
 </p>
 <br />
 
-{% code 'cpp' %}
+<pre><code>
 image = QImage(callback->pixels, bounds.width(), bounds.height(), QImage::Format_RGB32);
 callback->mutex->unlock();
 update();
-{% endcode %}
+</code></pre>
 
 <p>
 Já no método paint, basta apenas desenhar a imagem:
 </p>
 <br />
 
-{% code 'cpp' %}
+<pre><code>
 painter->drawImage(QPoint(0, 0), image);
-{% endcode %}
+</code></pre>
 
 <p>
 Resumindo... Apesar do pequeno overhead[2], a versão em Qt ficou bem mais performática do que a em SDL, e funcionou exatamente como eu queria, que era poder reproduzir um vídeo dentro de um QGraphicsView e desenhar widgets sobre o vídeo tocando, além é claro de poder aplicar transparência, rotacionar/redimensionar, e todas as outras coisas possíveis no Graphics View Framework, e de bônus, posso usar com QML/QtQuick :D
