@@ -125,10 +125,6 @@ class SumDelegate : public QObject
 QWebFrame *frame = ui->webView->page()->mainFrame();
 frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 </code></pre>
-</div>
-<div style="clear: both;">
-</div>
-</div>
 
 <p>
 Deu para notar a diferença, não? A versão usando luabind além de ter que implementar a classe IODevice, ainda tive o trabalho de "expor" todos os métodos, construtores, enumeradores, além do mais, o luabind faz uso intensivo do <a href="http://www.boost.org/doc/libs/1_48_0/libs/mpl/doc/index.html">boost.mpl</a> que auxilia na hora de descobrir propriedades da classe, mas como é praticamente tudo resolvido em <a href="http://en.wikipedia.org/wiki/Compile_time">tempo de compilação</a> e devido a isso o tempo de compilação se estende um pouco, ainda assim é mais fácil do que usar a <a href="http://www.lua.org/pil/index.html#P4">API do Lua</a> diretamente. Se você ficou curioso e quer conhecer outras alternativas para criar "pontes" para lua, recomendo ler <a href="http://realmensch.org/blog/fun-lua-bindings">esse artigo</a>.
