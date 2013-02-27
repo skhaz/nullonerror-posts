@@ -64,16 +64,15 @@ def color(param):
 
 <p>
 Do outro lado (ou melhor, no processo vizinho), temos um processo rodando com privilégios de root, e que será o responsável por escrever na GPIO. Sua tarefa é igualmente simples e similar à anterior: fica esperando um novo valor chegar e escreve na GPIO, desta maneira:
-<pre><code class="python">
-    while True:
-        rgb = int(socket.recv())
-        red = (rgb >> 16) & 0xFF
-        green = (rgb >> 8) & 0xFF
-        blue = rgb & 0xFF
+<pre><code class="python">while True:
+  rgb = int(socket.recv())
+  red = (rgb >> 16) & 0xFF
+  green = (rgb >> 8) & 0xFF
+  blue = rgb & 0xFF
 
-        wiringpi.softPwmWrite(RED_PIN, red)
-        wiringpi.softPwmWrite(GREEN_PIN, green)
-        wiringpi.softPwmWrite(BLUE_PIN, blue)</code></pre>
+  wiringpi.softPwmWrite(RED_PIN, red)
+  wiringpi.softPwmWrite(GREEN_PIN, green)
+  wiringpi.softPwmWrite(BLUE_PIN, blue)</code></pre>
 </p>
 
 <p>
