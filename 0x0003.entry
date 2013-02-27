@@ -15,7 +15,7 @@ e logo em seguida o GPSD passa a enviar o protocolo <a href="http://www.gpsinfor
 Farei uma breve explicação de como funciona isso, no html temos
 </p>
 
-<pre><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+<pre><code class="html">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
   &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
 
 &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
@@ -45,7 +45,7 @@ Farei uma breve explicação de como funciona isso, no html temos
 E trecho de código abaixo (simplificado), é o que gera código em JavaScript e roda na VM, o slot <i>update</i> recebe a todo momento as coordenadas vindas da classe cliente do GPSD
 </p>
 
-<pre><code>void MainWindow::update(double latitude, double longitude)
+<pre><code class="cpp">void MainWindow::update(double latitude, double longitude)
 {
     QStringList code;
     code << QString("var pos = new GLatLng(%1, %2);").arg(latitude).arg(longitude);
@@ -67,7 +67,7 @@ Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distint
 </p>
 
 
-<pre><code>/*
+<pre><code class="cpp">/*
  * Exemplo usando luabind
  * cedido gentilmente pelo pessoal do Wintermoon :)
  */
@@ -119,7 +119,7 @@ class SumDelegate : public QObject
 };</code></pre>
 
 
-<pre><code>// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
+<pre><code class="cpp">// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
 // passa a ser visível para o "Meta-Object System", explico isso logo abaixo
 
 QWebFrame *frame = ui->webView->page()->mainFrame();
@@ -139,7 +139,7 @@ A versão em Qt é bem mais simplificada graças a esse cara, o <a href="http://
 Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim
 </p>
 
-<pre><code>class SumDelegate : public QObject
+<pre><code class="cpp">class SumDelegate : public QObject
 {
    public:
        explicit SumDelegate(QObject *parent = 0);
@@ -159,7 +159,7 @@ Bom... Até agora foi apenas uma introdução de como gerar e rodar código Java
 e a sua implementação dessa maneira
 </p>
 
-<pre><code>SumDelegate::SumDelegate(QObject *parent)
+<pre><code class="cpp">SumDelegate::SumDelegate(QObject *parent)
 : QObject(parent)
 {
 }
@@ -186,7 +186,7 @@ void SumDelegate::process(const QVariant& param1, const QVariant& param2)
 Note que eu adicionei um sinal extra, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes. A próxima etapa consiste em registrar essas classes e conseguir, de alguma maneira, fazer uma <a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a> (ou reflexão, como preferir) pelos sinais e slots, vai ser algo como esse trecho de código
 </p>
 
-<pre><code>template <typename T>
+<pre><code class="cpp">template <typename T>
 void registerDelegate() {
     const QMetaObject meta = T::staticMetaObject;
     for(int i = meta.methodOffset(); i < meta.methodCount(); ++i) {
@@ -221,7 +221,7 @@ Agora temos que que criar uma ponte entre o código em Qt e a VM de JavaScript, 
 Vamos aproveitar a classe SumDelegate e criar um novo <a href="http://doc.qt.nokia.com/qtcreator-2.4/creator-using-qt-designer.html"><i>form</i></a> no projeto, nesse <a href="http://doc.qt.nokia.com/qtcreator-2.4/creator-using-qt-designer.html"><i>form</i></a> adicionei um <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebview.html" title="QWebView">QWebView</a>, o construtor vai ficar mais ou menos assim
 </p>
 
-<pre><code>Form::Form(QWidget *parent)
+<pre><code class="cpp">Form::Form(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::Form)
 {
@@ -237,7 +237,7 @@ No construtor apenas conectamos o sinal <a href="http://developer.qt.nokia.com/d
 e no slot <i>addObject</i>
 
 
-<pre><code>void Form::addObject()
+<pre><codeclass="cpp">void Form::addObject()
 {
    QWebFrame *frame = ui->webView->page()->mainFrame();
    frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
@@ -247,7 +247,7 @@ e no slot <i>addObject</i>
 o primeiro parâmetro é o nome da instância do nosso objeto no JavaScript, já o segundo, se trata da instância em si. Já o código em JavaScript da página ficou assim
 </p>
 
-<pre><code>sumDelegate.result.connect(this, function(data) {
+<pre><code class="cpp">sumDelegate.result.connect(this, function(data) {
    alert(data);
 });
 
