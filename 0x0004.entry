@@ -1,11 +1,94 @@
-
 <p>
-  {% imgur src="assets/0x0004/so_true.jpg" %}
+Esses dias alguém na lista <a href="https://groups.google.com/group/hackerspacesp" alt="Garoa Hacker Club">Garoa Hacker Club</a> perguntou sobre como usar a <a href="http://elinux.org/RPi_Low-level_peripherals#General_Purpose_Input.2FOutput_.28GPIO.29">GPIO do RaspberryPi</a> em conjunto com o framework <a href="https://www.djangoproject.com/">Django</a> e as implicações em se rodar como root, pois como vocês bem sabem, só é possivel acessar a GPIO do RaspberryPi com permissão total, mas não é legal rodar o servidor também como root; logo, a solução que me veio à cabeça consistia em separar ambas as tarefas e usar um servidor de fila.
 </p>
 
-<br />
+<p>
+Pois bem, como eu estava sem o que fazer, decidi implementar. Segue abaixo um passo-a-passo de como fiz:
+</p>
 
-(via unknow)
+<p>
+Antes de tudo, conecte-se via ssh no RaspberryPi e atualize o apt-get:
+<pre><code>sudo apt-get update
+sudo apt-get upgrade</code></pre>
+</p>
 
-<br />
+<p>
+Se você ainda não instalou, instale o pacote build-essential. Nesse metapackage vem o compilador gcc, makefile, bibliotecas e outras coisas necessárias para o que vamos fazer a seguir.
+<pre><code>apt-get install build-essential</code></pre>
+</p>
+
+<p>
+O servidor de fila escolhido para esta tarefa será o <a href="http://www.zeromq.org/">ZeroMQ</a>, e como se tratava de um teste rápido (e também porque já não tenho mais idade), optei por usar Python. Portanto, vamos instalar o binding do ZeroMQ para Python:
+<pre><code>sudo apt-get install python-zmq</code></pre>
+</p>
+
+<p>
+Também vamos precisar do git:
+<pre><code>sudo apt-get install git-core</code></pre>
+</p>
+
+<p>
+Vamos utilizar a biblioteca wiringPi para manipular a GPIO - aqueles que já escreveram código para o Arduino vão se sentir em casa, é bem simples de usar.
+Como Python foi a linguagem escolhida, vamos fazer uso do binding da biblioteca wiringPi para python, e para isso, precisamos instalar o respectivo pacote de desenvolvimento:
+
+<pre><code>sudo apt-get install python-dev</code></pre>
+</p>
+
+<p>
+Agora sim, estamos aptos para compilar o wiringPi-Python:
+
+<pre><code>git clone https://github.com/WiringPi/WiringPi-Python.git
+cd WiringPi-Python
+git submodule update --init
+sudo python setup.py install</code></pre>
+</p>
+
+<p>
+Orquestrando
+</p>
+
+<p>
+A ideia é bem simples: vamos acender um LED RGB usando software PWM. Mas por que software? Porque o RaspberryPi tem apenas um PWM controlado por hardware, e vamos precisar de 3 portas (vermelho, verde e azul).
+</p>
+
+<p>
+A interface será em html5, usando um colorpicker. Cada interação nesse componente envia para o servidor a nova cor através de uma requisição GET.
+</p>
+
+<p>
+A tarefa do servidor é muito simples: chegou um novo valor, insere na fila do ZeroMQ e pronto
+<pre><code class="python">@route('/color/:param')
+def color(param):
+    socket.send(param)</code></pre>
+</p>
+
+<p>
+Do outro lado (ou melhor, no processo vizinho), temos um processo rodando com privilégios de root, e que será o responsável por escrever na GPIO. Sua tarefa é igualmente simples e similar à anterior: fica esperando um novo valor chegar e escreve na GPIO, desta maneira:
+<pre><code class="python">
+    while True:
+        rgb = int(socket.recv())
+        red = (rgb >> 16) & 0xFF
+        green = (rgb >> 8) & 0xFF
+        blue = rgb & 0xFF
+
+        wiringpi.softPwmWrite(RED_PIN, red)
+        wiringpi.softPwmWrite(GREEN_PIN, green)
+        wiringpi.softPwmWrite(BLUE_PIN, blue)</code></pre>
+</p>
+
+<p>
+É importante lembrar que o ZeroMQ está no modo publisher-subscriber.
+</p>
+
+<p>
+… E tudo isso para acender um LED :)
+</p>
+
+<p>
+Esta foi a maneira que resolvi a questão de evitar rodar o servidor como root. Quem tiver outras ideias, poste abaixo nos comentários!
+</p>
+
+<p>
+Código-fonte <a href="https://github.com/skhaz/come-on-baby-light-my-LED">https://github.com/skhaz/come-on-baby-light-my-LED</a>
+</p>
 
