@@ -8,39 +8,39 @@ Pois bem, como eu estava sem o que fazer, decidi implementar. Segue abaixo um pa
 
 <p>
 Antes de tudo, conecte-se via ssh no RaspberryPi e atualize o apt-get:
-<pre><code>sudo apt-get update
-sudo apt-get upgrade</code></pre>
+<pre>sudo apt-get update
+sudo apt-get upgrade</pre>
 </p>
 
 <p>
 Se você ainda não instalou, instale o pacote build-essential. Nesse metapackage vem o compilador gcc, makefile, bibliotecas e outras coisas necessárias para o que vamos fazer a seguir.
-<pre><code>apt-get install build-essential</code></pre>
+<pre>apt-get install build-essential</pre>
 </p>
 
 <p>
 O servidor de fila escolhido para esta tarefa será o <a href="http://www.zeromq.org/">ZeroMQ</a>, e como se tratava de um teste rápido (e também porque já não tenho mais idade), optei por usar Python. Portanto, vamos instalar o binding do ZeroMQ para Python:
-<pre><code>sudo apt-get install python-zmq</code></pre>
+<pre>sudo apt-get install python-zmq</pre>
 </p>
 
 <p>
 Também vamos precisar do git:
-<pre><code>sudo apt-get install git-core</code></pre>
+<pre>sudo apt-get install git-core</pre>
 </p>
 
 <p>
 Vamos utilizar a biblioteca wiringPi para manipular a GPIO - aqueles que já escreveram código para o Arduino vão se sentir em casa, é bem simples de usar.
 Como Python foi a linguagem escolhida, vamos fazer uso do binding da biblioteca wiringPi para python, e para isso, precisamos instalar o respectivo pacote de desenvolvimento:
 
-<pre><code>sudo apt-get install python-dev</code></pre>
+<pre>sudo apt-get install python-dev</pre>
 </p>
 
 <p>
 Agora sim, estamos aptos para compilar o wiringPi-Python:
 
-<pre><code>git clone https://github.com/WiringPi/WiringPi-Python.git
+<pre>git clone https://github.com/WiringPi/WiringPi-Python.git
 cd WiringPi-Python
 git submodule update --init
-sudo python setup.py install</code></pre>
+sudo python setup.py install</pre>
 </p>
 
 <p>
@@ -57,14 +57,14 @@ A interface será em html5, usando um colorpicker. Cada interação nesse compon
 
 <p>
 A tarefa do servidor é muito simples: chegou um novo valor, insere na fila do ZeroMQ e pronto
-<pre class="prettyprint"><code>@route('/color/:param')
+<pre class="prettyprint">@route('/color/:param')
 def color(param):
-    socket.send(param)</code></pre>
+    socket.send(param)</pre>
 </p>
 
 <p>
 Do outro lado (ou melhor, no processo vizinho), temos um processo rodando com privilégios de root, e que será o responsável por escrever na GPIO. Sua tarefa é igualmente simples e similar à anterior: fica esperando um novo valor chegar e escreve na GPIO, desta maneira:
-<pre class="prettyprint"><code>while True:
+<pre class="prettyprint">while True:
   rgb = int(socket.recv())
   red = (rgb >> 16) & 0xFF
   green = (rgb >> 8) & 0xFF
@@ -72,7 +72,7 @@ Do outro lado (ou melhor, no processo vizinho), temos um processo rodando com pr
 
   wiringpi.softPwmWrite(RED_PIN, red)
   wiringpi.softPwmWrite(GREEN_PIN, green)
-  wiringpi.softPwmWrite(BLUE_PIN, blue)</code></pre>
+  wiringpi.softPwmWrite(BLUE_PIN, blue)</pre>
 </p>
 
 <p>
@@ -92,3 +92,4 @@ Código-fonte <a href="https://github.com/skhaz/come-on-baby-light-my-LED">https
 </p>
 
 {% imgur src="assets/0x0004/colorpicker.jpg" %}
+
