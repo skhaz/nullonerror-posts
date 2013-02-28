@@ -8,13 +8,13 @@ Pois bem, como eu estava sem o que fazer, decidi implementar. Segue abaixo um pa
 
 <p>
 Antes de tudo, conecte-se via ssh no RaspberryPi e atualize o apt-get:
-<pre>sudo apt-get update
+<pre class="prettyprint">sudo apt-get update
 sudo apt-get upgrade</pre>
 </p>
 
 <p>
 Se você ainda não instalou, instale o pacote build-essential. Nesse metapackage vem o compilador gcc, makefile, bibliotecas e outras coisas necessárias para o que vamos fazer a seguir.
-<pre>apt-get install build-essential</pre>
+<pre class="prettyprint">apt-get install build-essential</pre>
 </p>
 
 <p>
@@ -24,20 +24,20 @@ O servidor de fila escolhido para esta tarefa será o <a href="http://www.zeromq
 
 <p>
 Também vamos precisar do git:
-<pre>sudo apt-get install git-core</pre>
+<pre class="prettyprint">sudo apt-get install git-core</pre>
 </p>
 
 <p>
 Vamos utilizar a biblioteca wiringPi para manipular a GPIO - aqueles que já escreveram código para o Arduino vão se sentir em casa, é bem simples de usar.
 Como Python foi a linguagem escolhida, vamos fazer uso do binding da biblioteca wiringPi para python, e para isso, precisamos instalar o respectivo pacote de desenvolvimento:
 
-<pre>sudo apt-get install python-dev</pre>
+<pre class="prettyprint">sudo apt-get install python-dev</pre>
 </p>
 
 <p>
 Agora sim, estamos aptos para compilar o wiringPi-Python:
 
-<pre>git clone https://github.com/WiringPi/WiringPi-Python.git
+<pre class="prettyprint">git clone https://github.com/WiringPi/WiringPi-Python.git
 cd WiringPi-Python
 git submodule update --init
 sudo python setup.py install</pre>
@@ -92,4 +92,3 @@ Código-fonte <a href="https://github.com/skhaz/come-on-baby-light-my-LED">https
 </p>
 
 {% imgur src="assets/0x0004/colorpicker.jpg" %}
-
