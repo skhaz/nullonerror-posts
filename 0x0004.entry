@@ -57,14 +57,14 @@ A interface será em html5, usando um colorpicker. Cada interação nesse compon
 
 <p>
 A tarefa do servidor é muito simples: chegou um novo valor, insere na fila do ZeroMQ e pronto
-<pre><code class="python">@route('/color/:param')
+<pre class="prettyprint"><code>@route('/color/:param')
 def color(param):
     socket.send(param)</code></pre>
 </p>
 
 <p>
 Do outro lado (ou melhor, no processo vizinho), temos um processo rodando com privilégios de root, e que será o responsável por escrever na GPIO. Sua tarefa é igualmente simples e similar à anterior: fica esperando um novo valor chegar e escreve na GPIO, desta maneira:
-<pre><code class="python">while True:
+<pre class="prettyprint"><code>while True:
   rgb = int(socket.recv())
   red = (rgb >> 16) & 0xFF
   green = (rgb >> 8) & 0xFF
