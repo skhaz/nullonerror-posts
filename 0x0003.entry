@@ -39,7 +39,7 @@ Farei uma breve explicação de como funciona isso, no html temos
   &lt;body onload=&quot;load()&quot; onunload=&quot;GUnload()&quot; topmargin=&quot;0&quot; leftmargin=&quot;0&quot;&gt;
     &lt;div id=&quot;map&quot; style=&quot;width: 800px; height: 600px&quot;&gt;&lt;/div&gt;
   &lt;/body&gt;
-&lt;/html&gt;<pre>
+&lt;/html&gt;</pre>
 
 <p>
 E trecho de código abaixo (simplificado), é o que gera código em JavaScript e roda na VM, o slot <i>update</i> recebe a todo momento as coordenadas vindas da classe cliente do GPSD
