@@ -19,7 +19,7 @@ Se você ainda não instalou, instale o pacote build-essential. Nesse metapackag
 
 <p>
 O servidor de fila escolhido para esta tarefa será o <a href="http://www.zeromq.org/">ZeroMQ</a>, e como se tratava de um teste rápido (e também porque já não tenho mais idade), optei por usar Python. Portanto, vamos instalar o binding do ZeroMQ para Python:
-<pre>sudo apt-get install python-zmq</pre>
+<pre class="prettyprint">sudo apt-get install python-zmq</pre>
 </p>
 
 <p>
