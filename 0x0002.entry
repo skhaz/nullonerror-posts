@@ -1,6 +1,5 @@
 <p>
-
-TESTE Esse artigo vai trazer uma compilação dos meus estudos sobre multimídia no Qt usando a poderosa libVLC, mas antes de tudo, alguns já devem estar se
+Esse artigo vai trazer uma compilação dos meus estudos sobre multimídia no Qt usando a poderosa libVLC, mas antes de tudo, alguns já devem estar se
 perguntando "Porque usar o VLC sendo que o Qt já vem com o Phonon embarcado?", Essa é uma boa pergunta, o framework Phonon do projeto KDE é excelente
 e cumpre muito bem seu papel, para cada plataforma é usado um backend de vídeo e áudio, no Windows é o DirectShow, no OSX o QuickTime, no Linux e "unixes" em geral, pode ser o GStreamer, Xine ou mesmo o VLC, dentro outros, a lista completa de backends suportados é <a href="https://projects.kde.org/projects/kdesupport/phonon">essa</a>.
 </p>
