@@ -53,7 +53,7 @@ E trecho de código abaixo (simplificado), é o que gera código em JavaScript e
     code &lt;&lt; "var marker = new GMarker(pos);";
     code &lt;&lt; "map.addOverlay(marker);";
 
-    view->page()-&gt;mainFrame()-&gt;evaluateJavaScript(code.join("\n"));
+    view-&gt;page()-&gt;mainFrame()-&gt;evaluateJavaScript(code.join("\n"));
 }</pre
 
 <p>
