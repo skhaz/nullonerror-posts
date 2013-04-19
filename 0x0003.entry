@@ -53,8 +53,8 @@ E trecho de código abaixo (simplificado), é o que gera código em JavaScript e
     code << "var marker = new GMarker(pos);";
     code << "map.addOverlay(marker);";
 
-    view->page()->mainFrame()->evaluateJavaScript(code.join("\n"));
-}</pre>
+    view->page()-&gt;mainFrame()-&gt;evaluateJavaScript(code.join("\n"));
+}</pre
 
 <p>
 Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
@@ -79,7 +79,7 @@ luabind::open(L);
 
 module(L)
 [
-  class_<IODevice>("IODevice")
+  class_&lt;IODevice&gt;("IODevice")
     .enum_("OpenMode")
     [
       value("ReadOnly", 2),
@@ -87,8 +87,8 @@ module(L)
       value("Append", 8),
       value("Text", 16)
     ],
-    class_<File, IODevice>("File")
-    .def(constructor<const String &>())
+    class_&lt;File, IODevice&gt;("File")
+    .def(constructor&lt;const String &&gt;())
     .def("open", &File::open)
     .def("length", &File::length)
     .def("eof", &File::eof)
@@ -122,8 +122,8 @@ class SumDelegate : public QObject
 <pre class="prettyprint"><code class="cpp">// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
 // passa a ser visível para o "Meta-Object System", explico isso logo abaixo
 
-QWebFrame *frame = ui->webView->page()->mainFrame();
-frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
+QWebFrame *frame = ui-&gt;webView-&gt;page()-&gt;mainFrame();
+frame-&gt;addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 </pre>
 
 <p>
@@ -189,8 +189,8 @@ Note que eu adicionei um sinal extra, o <i>error</i>, coloquei lá apenas para s
 <pre class="prettyprint"><code class="cpp">template <typename T>
 void registerDelegate() {
     const QMetaObject meta = T::staticMetaObject;
-    for(int i = meta.methodOffset(); i < meta.methodCount(); ++i) {
-        qDebug() << meta.method(i).methodType() << meta.method(i).signature();
+    for(int i = meta.methodOffset(); i &lt; meta.methodCount(); ++i) {
+        qDebug() &lt;&lt; meta.method(i).methodType() &lt;&lt; meta.method(i).signature();
     }
 }</pre>
 
@@ -226,8 +226,8 @@ Vamos aproveitar a classe SumDelegate e criar um novo <a href="http://doc.qt.nok
 , ui(new Ui::Form)
 {
    ui->setupUi(this);
-   QWebPage *page = ui->webView->page();
-   connect(page->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addObject()));
+   QWebPage *page = ui-&gt;webView-&gt;page();
+   connect(page-&gt;mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addObject()));
 }</pre>
 
 <p>
@@ -239,8 +239,8 @@ e no slot <i>addObject</i>
 
 <pre class="prettyprint"><codeclass="cpp">void Form::addObject()
 {
-   QWebFrame *frame = ui->webView->page()->mainFrame();
-   frame->addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
+   QWebFrame *frame = ui-&gt;webView->page()-&gt;mainFrame();
+   frame-&gt;addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
 }</pre>
 
 <p>
