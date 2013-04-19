@@ -45,7 +45,7 @@ Farei uma breve explicação de como funciona isso, no html temos
 E trecho de código abaixo (simplificado), é o que gera código em JavaScript e roda na VM, o slot <i>update</i> recebe a todo momento as coordenadas vindas da classe cliente do GPSD
 </p>
 
-<pre class="prettyprint"><code class="cpp">void MainWindow::update(double latitude, double longitude)
+<pre class="prettyprint">void MainWindow::update(double latitude, double longitude)
 {
     QStringList code;
     code &lt;&lt; QString("var pos = new GLatLng(%1, %2);").arg(latitude).arg(longitude);
