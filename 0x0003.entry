@@ -48,10 +48,10 @@ E trecho de código abaixo (simplificado), é o que gera código em JavaScript e
 <pre class="prettyprint"><code class="cpp">void MainWindow::update(double latitude, double longitude)
 {
     QStringList code;
-    code << QString("var pos = new GLatLng(%1, %2);").arg(latitude).arg(longitude);
-    code << "map.setCenter(pos, 19);";
-    code << "var marker = new GMarker(pos);";
-    code << "map.addOverlay(marker);";
+    code &lt;&lt; QString("var pos = new GLatLng(%1, %2);").arg(latitude).arg(longitude);
+    code &lt;&lt; "map.setCenter(pos, 19);";
+    code &lt;&lt; "var marker = new GMarker(pos);";
+    code &lt;&lt; "map.addOverlay(marker);";
 
     view->page()-&gt;mainFrame()-&gt;evaluateJavaScript(code.join("\n"));
 }</pre
