@@ -54,7 +54,7 @@ E trecho de código abaixo (simplificado), é o que gera código em JavaScript e
     code &lt;&lt; "map.addOverlay(marker);";
 
     view-&gt;page()-&gt;mainFrame()-&gt;evaluateJavaScript(code.join("\n"));
-}</pre
+}</pre>
 
 <p>
 Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
