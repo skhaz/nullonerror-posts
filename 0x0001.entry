@@ -261,10 +261,6 @@ Basicamente o que esse decorator faz é gerar uma chave usando a url com seus pa
 </p>
 
 <p>
-<h4>Modus operandi</h4>
-</p>
-
-<p>
 Para inserir uma nova entrada no blog, deve-se criar dois arquivos, cada um com uma extensão previamente estabelecida (poderia ser apenas um único arquivo e fazer um split usando uma determinada <em>tag</em>, mas achei que ficaria meio <em>chunchado</em>), então são dois arquivos com o mesmo nome, porém um deles é terminado em <em>.entry</em>, que contém o HTML que será exibido, e o outro, terminado em <em>.meta</em> é um <a href="http://www.yaml.org/">YAML</a> com as informações básicas, como título, data de publicação, tags e se é público ou não. Para automatizar essa inserção de dados, faço uso de <a href="https://help.github.com/articles/post-receive-hooks">post-receive hooks</a> do github, ou seja, logo após um <em>git push</em> o github faz uma chamada <em>POST</em> com um <em>json</em> descrito na documentção do github; com esse json em mãos, basta fazer o <em>parsing</em> e ver quais arquivos foram modificados ou adicionados, com as extensões mencionadas acima:
 </p>
 
