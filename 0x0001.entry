@@ -16,7 +16,7 @@ Já havia feito outros projetos que rodam sob o AppEngine, inclusive a primeira 
 </p>
 
 <p>
-Porém, eu queria fazer algo diferente, queria estudar outros frameworks, e foi então que decidi usar o <a href="http://bottlepy.org/">bottle</a> e o <a href="http://jinja.pocoo.org/">jinja2</a> para renderização de templates. O resultado foi que aprendi <strong>muito</strong>, inclusive cheguei a escrever alguns filtros para o jinja2: um deles é o <a href="https://github.com/skhaz/nullonerror/blob/experimental/imgur.py">, responsável por subir imagens no imgur quando encontra a tag imgur e depois troca pela tag img do html</a>; e o outro, ao encontrar a tag code, invocava o pygments, que por sua vez fazia parser do código e o coloria, mas acabei descartando este filtro e deixando essa tarefa com o cliente, usando o <a href="http://code.google.com/p/google-code-prettify/">prettify</a>.
+Porém, eu queria fazer algo diferente, queria estudar outros frameworks, e foi então que decidi usar o <a href="http://bottlepy.org/">bottle</a> e o <a href="http://jinja.pocoo.org/">jinja2</a> para renderização de templates. O resultado foi que aprendi <strong>muito</strong>, inclusive cheguei a escrever alguns filtros para o jinja2: um deles é o <a href="https://github.com/skhaz/nullonerror/blob/experimental/imgur.py">imgur</a>, responsável por subir imagens no imgur quando encontra a tag imgur e depois troca pela tag img do html; e o outro, ao encontrar a tag code, invocava o pygments, que por sua vez fazia parser do código e o coloria, mas acabei descartando este filtro e deixando essa tarefa com o cliente, usando o <a href="http://code.google.com/p/google-code-prettify/">prettify</a>.
 <p>
 
 <p>
