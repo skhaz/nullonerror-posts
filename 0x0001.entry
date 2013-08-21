@@ -29,6 +29,7 @@ Como faço uso de uma quantidade considerável de javascript, pesquisei por algu
 
 <p>
 <pre class="prettyprint">
+{% raw %}
 var require = {
   baseUrl: "/static/js",
 
@@ -95,6 +96,7 @@ var require = {
     })
   }
 }
+{% endraw %}
 </pre>
 <p>
 
@@ -116,7 +118,7 @@ init: function() {
     window.agent = agent
     window.setInterval(function() { agent.animate() }, 1500)
   });
-<pre>
+</pre>
 </p>
 
 <p>
@@ -125,6 +127,7 @@ Ainda neste pequeno bloco de código javascript, temos algumas linhas com <em>ta
 
 <p>
 <pre class="prettyprint">
+{% raw %}
   deps: [
     'bootstrap',
 
@@ -132,6 +135,7 @@ Ainda neste pequeno bloco de código javascript, temos algumas linhas com <em>ta
     '{{ module }}',
     {% endfor %}
   ]
+{% endraw %}
 </pre>
 </p>
 
@@ -141,7 +145,9 @@ Como podemos ver, pretendo apenas carregar o módulo <em>bootstrap</em>, e como 
 
 <p>
 <pre class="prettyprint">
+{% raw %}
 {% set modules = ['jquery.raptorize', 'clippy'] %}
+{% endraw %}
 </pre>
 </p>
 
