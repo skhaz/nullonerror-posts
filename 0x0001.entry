@@ -107,7 +107,7 @@ Outra configuração importante é o <em>shim</em>, este <em>array</em> contém 
 </p>
 
 <p>
-<pre class=”prettyprint>
+<pre class="prettyprint">
 init: function() {
   clippy.BASE_PATH = '/static/agents/'
   clippy.load('Clippy', function(agent) {
@@ -124,7 +124,7 @@ Ainda neste pequeno bloco de código javascript, temos algumas linhas com <em>ta
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
   deps: [
     'bootstrap',
 
@@ -140,7 +140,7 @@ Como podemos ver, pretendo apenas carregar o módulo <em>bootstrap</em>, e como 
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
 {% set modules = ['jquery.raptorize', 'clippy'] %}
 </pre>
 </p>
@@ -216,7 +216,7 @@ E por falar em DRY, uma tarefa que acabou ficando extremamente repetitiva foi a 
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
 def get_data():
   data = memcache.get('key')
   if data is not None:
@@ -233,7 +233,7 @@ Contudo, como só pretendo fazer <em>cache</em> das chamadas <em>get</em>, decid
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
 from google.appengine.api import memcache
 
 class memorize():
@@ -267,7 +267,7 @@ Para inserir uma nova entrada no blog, deve-se criar dois arquivos, cada um com 
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
 for commit in payload['commits']:
   for action, files  in commit.iteritems():
     if action in ['added', 'modified']:
@@ -282,7 +282,7 @@ Assim, basta montar a url completa com a função build_url:
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
 github = {
   'url' : 'https://raw.github.com',
   'repository' : 'nullonerror-posts',
@@ -300,7 +300,7 @@ Note o “raw” na url, esse é o caminho para o arquivo crú, isso significa q
 </p>
 
 <p>
-<pre class=”prettyprint”>
+<pre class="prettyprint">
 from google.appengine.api import urlfetch
 from utils import build_url
 result = urlfetch.fetch(url = build_url(filename))
@@ -328,7 +328,7 @@ Assim como eu posso inserir ou atualizar as entradas, posso fazer o mesmo na hor
 </p>
 
 <p>
-<pre class=”prettyprint>
+<pre class="prettyprint">
 elif action in ['removed']:
   for filename in files:
     basename, extension = os.path.splitext(filename)
