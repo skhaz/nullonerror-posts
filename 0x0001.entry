@@ -29,8 +29,7 @@ Como faço uso de uma quantidade considerável de javascript, pesquisei por algu
 
 <p>
 <pre class="prettyprint">
-{% raw %}
-var require = {
+{% raw %}var require = {
   baseUrl: "/static/js",
 
   shim: {
@@ -127,14 +126,13 @@ Ainda neste pequeno bloco de código javascript, temos algumas linhas com <em>ta
 
 <p>
 <pre class="prettyprint">
-{% raw %}
-  deps: [
-    'bootstrap',
+{% raw %}deps: [
+  'bootstrap',
 
-    {% for module in modules %}
+  {% for module in modules %}
     '{{ module }}',
-    {% endfor %}
-  ]
+  {% endfor %}
+]
 {% endraw %}
 </pre>
 </p>
