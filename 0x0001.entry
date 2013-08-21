@@ -145,9 +145,7 @@ Como podemos ver, pretendo apenas carregar o módulo <em>bootstrap</em>, e como 
 
 <p>
 <pre class="prettyprint">
-{% raw %}
-{% set modules = ['jquery.raptorize', 'clippy'] %}
-{% endraw %}
+{% raw %}{% set modules = ['jquery.raptorize', 'clippy'] %}{% endraw %}
 </pre>
 </p>
 
