@@ -23,7 +23,7 @@ auto expression = QVerbalExpressions()
   .anythingBut(" ")
   .endOfLine();
 
-qDebug() << expression;
+qDebug() << expression; // ^(?:http)(?:s)?(?:://)(?:www.)?(?:[^ ]*)$
 qDebug() << expression.test("https://www.google.com"); // true
 </pre>
 </p>
