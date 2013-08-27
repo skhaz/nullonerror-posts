@@ -348,7 +348,7 @@ Além disso, uso o <a href="https://www.cloudflare.com/">CloudFlare</a> para <a 
 </p>
 
 <p>
-Ainda falta implementar muita coisa, estive pensando em escrever um editor em Qt e usar a <a href="http://libgit2.github.com/">libgit2</a> para commitar e fazer push diretamente das alterações.]
+Ainda falta implementar muita coisa, estive pensando em escrever um editor em Qt e usar a <a href="http://libgit2.github.com/">libgit2</a> para commitar e fazer push diretamente das alterações.
 </p>
 
 <p>
