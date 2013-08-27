@@ -23,8 +23,8 @@ auto expression = QVerbalExpressions()
   .anythingBut(" ")
   .endOfLine();
 
-  qDebug() << expression;
-  qDebug() << expression.test("https://www.google.com"); // true
+qDebug() << expression;
+qDebug() << expression.test("https://www.google.com"); // true
 </pre>
 </p>
 
