@@ -1,4 +1,6 @@
 <p>
+=)
+
 Recentemente encontrei um projeto muito bacana chamado <a href="https://github.com/VerbalExpressions/">VerbalExpressions</a> que usa e abusa de <em>fluent interfaces</em> para construir expressões regulares, como é possivel notar, essa ideia já foi portada para diversas linguagens!<br />
 E como já existia um port para <a href="https://github.com/VerbalExpressions/PythonVerbalExpressions">Python</a> e para <a href="https://github.com/VerbalExpressions/CppVerbalExpressions">C++</a>, decidi "portar" para <a href="http://qt-project.org/">Qt</a>. Na verdade portar entre aspas, pois meu trabalho se resumiu a "s/std::string/QString/g" fora outras pequenas mudanças e/ou otimizações, logo, os creditos são todos do autor do <a href="https://github.com/VerbalExpressions/CppVerbalExpressions">CppVerbalExpressions</a><br />
 </p>
