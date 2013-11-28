@@ -1,6 +1,8 @@
-<p>
-<strong>Update</strong> Meu projeto foi aceito na organização <a href="https://github.com/VerbalExpressions/">VerbalExpressions</a>, é possível conferir <a href="https://github.com/VerbalExpressions/QtVerbalExpressions">neste endereço</a> :)
-<p>
+
+<div class="alert error-block">
+  <h4>Update</h4>
+  Meu projeto foi aceito na organização <a href="https://github.com/VerbalExpressions/">VerbalExpressions</a>, é possível conferir <a href="https://github.com/VerbalExpressions/QtVerbalExpressions">neste endereço</a> :)
+</div>
 
 <p>
 Recentemente encontrei um projeto muito bacana chamado <a href="https://github.com/VerbalExpressions/">VerbalExpressions</a> que usa e abusa de <em>fluent interfaces</em> para construir expressões regulares, como é possivel notar, essa ideia já foi portada para diversas linguagens!<br />
