@@ -31,15 +31,15 @@
 
 <p>É onde tem exatamente o que precisava, o AndroidManifest.xml, version.xml, os diretórios src e res. E o que temos dentro de <code>src/org/qtproject/qt5/android/bindings</code>? Temos QtActivity QtApplication, que herdam Activity e Application do Android SDK respectivamente, e como podemos ver, no AndroidManifest.xml</p>
 
-<pre class="prettyprint"><application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="@string/app_name">
+<pre class="prettyprint">&lt;application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="@string/app_name"&gt;
 
-  <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
+  &lt;activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
     android:name="org.qtproject.qt5.android.bindings.QtActivity"
                   android:label="@string/app_name"
-                  android:screenOrientation="unspecified">
+                  android:screenOrientation="unspecified"&gt;
 
   ...
-</application></pre>
+&lt;/application&gt;</pre>
 
 <p>Agora que temos quase tudo que precisamos, só é preciso descobrir como colocar toda essa tranqueira na hora do deploy. Lendo a documentação, descobri a variável <a href="http://qt-project.org/doc/qt-5/deployment-android.html#qmake-variables">ANDROID_PACKAGE_SOURCE_DIR</a>, que faz justamente o que precisava, então copiei o AndroidManifest.xml do Qt para o diretório <em>android-sources</em> e adicionei a seguinte entrada no .pro do projeto</p>
 
@@ -51,15 +51,14 @@
 
 <p>Precisamos de algumas customizações no AndroidManifest.xml; uma delas é para adicionar a FullscreenActivity do RevMob:</p>
 
-<pre class="prettyprint"><application ...>
-  <activity android:name="com.revmob.ads.fullscreen.FullscreenActivity"
+<pre class="prettyprint">&lt;application ...&gt;
+  &lt;activity android:name="com.revmob.ads.fullscreen.FullscreenActivity"
             android:theme="@android:style/Theme.Translucent"
-            android:configChanges="keyboardHidden|orientation">
-  </activity>
+            android:configChanges="keyboardHidden|orientation"&gt;
+  &lt;/activity&gt;
 
   ...
-</application>
-</pre>
+&lt;/application&gt;</pre>
 
 <p>Lembram que era preciso a instância de uma activity? Para isto criei um <em>wrapper</em>, No diretório <em>android-sources</em>, criei a estrutura de diretórios <em>src/com/revmob</em> e dentro um arquivo com o nome <em>RevMobActivity.java</em>, com o seguinte conteúdo:</p>
 
@@ -74,27 +73,26 @@ import android.app.Activity;
 import java.lang.String;
 
 public class RevMobActivity extends QtActivity {
-    
+
   private static Activity activity;
-    
+
   public RevMobActivity() {
     activity = this;
   }
-    
+
   public static void startSession(String appId) {              
     RevMobClient.setSDKName("qt-android");
     RevMobClient.setSDKVersion("0.0.1");
     RevMob.start(activity, appId);
   }
-    
+
   public static void showFullscreen() {
     RevMob revmob = RevMob.session();
     revmob.showFullscreen(activity);
   }
-  
+
   ...
-}
-</pre>
+}</pre>
 
 <p>E apontamos essa nova classe no <em>AndroidManifest.xml</em>, substituindo <code>org.qtproject.qt5.android.bindings.QtActivity</code> por <code>com.revmob.RevMobActivity</code>. Com isto, o Android passa a instanciar a classe customizada ao invés da classe do Qt, e finalmente temos um <em>wrapper</em>.</p>
 
@@ -107,17 +105,17 @@ public class RevMobActivity extends QtActivity {
 <pre class="prettyprint">QString appId = "";
 
 QAndroidJniObject param = QAndroidJniObject::fromString(appId);
-QAndroidJniObject::callStaticMethod<void>("com/revmob/RevMobActivity",
+QAndroidJniObject::callStaticMethod&lt;void&gt;("com/revmob/RevMobActivity",
                                           "startSession",
                                           "(Ljava/lang/String;)V",
-                                          param.object<jstring>());
+                                          param.object&lt;jstring&gt;());
 </pre>
 
 <p>Onde <em>appId</em> é um código fornecido pela RevMob que identifica sua app.</p>
 
 <p>Para mostrar um banner em FullScreen é bem simples - só precisamos invocar aquele método <em>showFullscreen</em> que foi criado logo acima, assim:</p>
 
-<pre class="prettyprint">QAndroidJniObject::callStaticMethod<void>("com/revmob/RevMobActivity", "showFullscreen");</pre>
+<pre class="prettyprint">QAndroidJniObject::callStaticMethod&lt;void&gt;("com/revmob/RevMobActivity", "showFullscreen");</pre>
 
 <p>O trecho acima invoca um método em Java da classe RevMobActivity, responsável por carregar e exibir um anúncio em <em>fullscreen</em>.</p>
 
