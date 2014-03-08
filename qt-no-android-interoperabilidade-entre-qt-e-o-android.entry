@@ -1,5 +1,5 @@
 
-<p>{% imgur src="assets/qt-e-android/qt-e-android.png" %}</p>
+<p>{% imgur src="assets/qt-no-android-interoperabilidade-entre-qt-e-o-android/qt-and-android.png" %}</p>
 
 <p>Como alguns de vocês sabem, tenho cada vez mais me aprofundado no desenvolvimento mobile, usando os mais variados SDKs. Recentemente precisei integrar a SDK da <a href="https://www.revmobmobileadnetwork.com">RevMob</a> num projeto mobile usando <a href="http://qt-project.org">Qt</a>; hoje irei cobrir apenas o Android, mas em breve postarei como fiz o mesmo para iOS.</p>
 
@@ -80,7 +80,7 @@ public class RevMobActivity extends QtActivity {
     activity = this;
   }
 
-  public static void startSession(String appId) {              
+  public static void startSession(String appId) {
     RevMobClient.setSDKName("qt-android");
     RevMobClient.setSDKVersion("0.0.1");
     RevMob.start(activity, appId);
