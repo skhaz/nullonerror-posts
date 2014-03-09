@@ -20,11 +20,11 @@
 
 <p>Depois de uma breve pesquisa no diretório de instalação do Qt, encontrei o seguinte caminho:</p>
 
-<p><code>$QTDIR/5.X.X/android_(armv5|android_armv7|android_x86)/src/android/java</code></p>
+<p><code>$QTDIR/5.*.*/android_(armv5|android_armv7|android_x86)/src/android/java</code></p>
 
 <ul>
 <li><em>$QTDIR</em> É o diretório de instalação</li>
-<li><em>5.X.X</em> A versão</li>
+<li><em>5.*.*</em> A versão</li>
 <li><em>android_(armv5|android_armv7|android_x86)</em> A arquitetura</li>
 </ul>
 
