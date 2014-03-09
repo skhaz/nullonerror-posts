@@ -20,7 +20,7 @@
 
 <p>Depois de uma breve pesquisa no diretório de instalação do Qt, encontrei o seguinte caminho:</p>
 
-<p><code>$QTDIR/5.*.*/android_(armv5|android_armv7|android_x86)/src/android/java</code></p>
+<p>$QTDIR/5.*.*/android_(armv5|android_armv7|android_x86)/src/android/java</p>
 
 <ul>
 <li><em>$QTDIR</em> É o diretório de instalação</li>
@@ -29,7 +29,7 @@
 </ul>
 
 
-<p>É onde tem exatamente o que precisava, o AndroidManifest.xml, version.xml, os diretórios src e res. E o que temos dentro de <code>src/org/qtproject/qt5/android/bindings</code>? Temos QtActivity QtApplication, que herdam Activity e Application do Android SDK respectivamente, e como podemos ver, no AndroidManifest.xml</p>
+<p>É onde tem exatamente o que precisava, o AndroidManifest.xml, version.xml, os diretórios src e res. E o que temos dentro de _src/org/qtproject/qt5/android/bindings_? Temos QtActivity QtApplication, que herdam Activity e Application do Android SDK respectivamente, e como podemos ver, no AndroidManifest.xml</p>
 
 <pre class="prettyprint">&lt;application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="@string/app_name"&gt;
 
