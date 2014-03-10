@@ -67,7 +67,7 @@ Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distint
 </p>
 
 
-<pre class="prettyprint"><code class="cpp">/*
+<pre class="prettyprint">/*
  * Exemplo usando luabind
  * cedido gentilmente pelo pessoal do Wintermoon :)
  */
@@ -119,7 +119,7 @@ class SumDelegate : public QObject
 };</pre>
 
 
-<pre class="prettyprint"><code class="cpp">// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
+<pre class="prettyprint">// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
 // passa a ser visível para o "Meta-Object System", explico isso logo abaixo
 
 QWebFrame *frame = ui-&gt;webView-&gt;page()-&gt;mainFrame();
@@ -260,5 +260,5 @@ como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, "tudo
 <center><i>Divertido, nao? ;)</i></center>
 
 <p>
-Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando... 
+Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando...
 </p>
