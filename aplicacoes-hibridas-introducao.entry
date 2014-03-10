@@ -159,7 +159,7 @@ Bom... Até agora foi apenas uma introdução de como gerar e rodar código Java
 e a sua implementação dessa maneira
 </p>
 
-<pre class="prettyprint"><code class="cpp">SumDelegate::SumDelegate(QObject *parent)
+<pre class="prettyprint">SumDelegate::SumDelegate(QObject *parent)
 : QObject(parent)
 {
 }
@@ -186,7 +186,7 @@ void SumDelegate::process(const QVariant& param1, const QVariant& param2)
 Note que eu adicionei um sinal extra, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes. A próxima etapa consiste em registrar essas classes e conseguir, de alguma maneira, fazer uma <a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a> (ou reflexão, como preferir) pelos sinais e slots, vai ser algo como esse trecho de código
 </p>
 
-<pre class="prettyprint"><code class="cpp">template <typename T>
+<pre class="prettyprint">template <typename T>
 void registerDelegate() {
     const QMetaObject meta = T::staticMetaObject;
     for(int i = meta.methodOffset(); i &lt; meta.methodCount(); ++i) {
@@ -221,7 +221,7 @@ Agora temos que que criar uma ponte entre o código em Qt e a VM de JavaScript, 
 Vamos aproveitar a classe SumDelegate e criar um novo <a href="http://doc.qt.nokia.com/qtcreator-2.4/creator-using-qt-designer.html"><i>form</i></a> no projeto, nesse <a href="http://doc.qt.nokia.com/qtcreator-2.4/creator-using-qt-designer.html"><i>form</i></a> adicionei um <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebview.html" title="QWebView">QWebView</a>, o construtor vai ficar mais ou menos assim
 </p>
 
-<pre class="prettyprint"><code class="cpp">Form::Form(QWidget *parent)
+<pre class="prettyprint">Form::Form(QWidget *parent)
 : QWidget(parent)
 , ui(new Ui::Form)
 {
@@ -237,7 +237,7 @@ No construtor apenas conectamos o sinal <a href="http://developer.qt.nokia.com/d
 e no slot <i>addObject</i>
 
 
-<pre class="prettyprint"><codeclass="cpp">void Form::addObject()
+<pre class="prettyprint">void Form::addObject()
 {
    QWebFrame *frame = ui-&gt;webView->page()-&gt;mainFrame();
    frame-&gt;addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
@@ -247,7 +247,7 @@ e no slot <i>addObject</i>
 o primeiro parâmetro é o nome da instância do nosso objeto no JavaScript, já o segundo, se trata da instância em si. Já o código em JavaScript da página ficou assim
 </p>
 
-<pre class="prettyprint"><code class="cpp">sumDelegate.result.connect(this, function(data) {
+<pre class="prettyprint">sumDelegate.result.connect(this, function(data) {
    alert(data);
 });
 
