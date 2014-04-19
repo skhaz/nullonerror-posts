@@ -1,0 +1,264 @@
+<p>
+O objetivo desse artigo será em demonstrar como criar uma aplicação híbrida usando HTML5 e Qt, mas antes disso, o que são aplicações híbridas? Aplicações híbridas são soluções que adotam uma ou mais tecnologias, por exemplo, o uso de HTML para interface, por ser mais fácil e mais rápido de implementar e código nativo para usar recursos não presentes no HTML5, como por exemplo, acesso ao sistema de arquivos, comprimir um vídeo, entre outras coisas... bom essa é a minha definição, se você tiver alguma melhor diga a nos comentários :)
+</p>
+<p>
+Um exemplo de aplicação híbrida que fiz há aproximadamente um ano, que consistia em abrir uma pagina em HTML e dentro dessa pagina, usando a <a href="http://code.google.com/apis/maps/documentation/javascript/v2/reference.html" title="Google Maps API">API do google maps</a>, do outro lado, criei um cliente simples do <a href="http://en.wikipedia.org/wiki/Daemon_(computing)" title="daemon">daemon</a> <a href="http://www.catb.org/gpsd/" title="gpsd">gpsd</a> que funcionava via socket TCP, ouvindo na porta 2948, assim que a conexão era estabelecida, basicamente era escrever a mensagem
+<p>
+
+<pre class="prettyprint">?WATCH={"nmea" : true}"</pre>
+
+<p>
+e logo em seguida o GPSD passa a enviar o protocolo <a href="http://www.gpsinformation.org/dale/nmea.htm" title="NMEA">NMEA</a>, contendo vários dados, mas o que realmente importa é a latitude e longitude. Engraçado só hoje fui descobrir que eu poderia, ao invés de receber o protocolo NMEA, receber um JSON, e nem teria que fazer o parser, poderia enviar diretamente para o JavaScript rodando no QWebframe, quem sabe <a href="https://github.com/skhaz/qtgps" title="código fonte aqui!">algum dia eu "refatoro" o código...</a>
+</p>
+
+<p>
+Farei uma breve explicação de como funciona isso, no html temos
+</p>
+
+<pre class="prettyprint">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+  &lt;head&gt;
+  &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;
+  &lt;title&gt;Google Maps&lt;/title&gt;
+  &lt;script src=&quot;http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;key=GMAPS_KEY&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+  &lt;script type=&quot;text/javascript&quot;&gt;
+  //&lt;![CDATA[
+  var map;
+
+  function load() {
+  if (GBrowserIsCompatible()) {
+      map = new GMap2(document.getElementById(&quot;map&quot;));
+      map.setUIToDefault();
+    }
+  }
+  //]]&gt;
+  &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body onload=&quot;load()&quot; onunload=&quot;GUnload()&quot; topmargin=&quot;0&quot; leftmargin=&quot;0&quot;&gt;
+    &lt;div id=&quot;map&quot; style=&quot;width: 800px; height: 600px&quot;&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>
+E trecho de código abaixo (simplificado), é o que gera código em JavaScript e roda na VM, o slot <i>update</i> recebe a todo momento as coordenadas vindas da classe cliente do GPSD
+</p>
+
+<pre class="prettyprint">void MainWindow::update(double latitude, double longitude)
+{
+    QStringList code;
+    code &lt;&lt; QString("var pos = new GLatLng(%1, %2);").arg(latitude).arg(longitude);
+    code &lt;&lt; "map.setCenter(pos, 19);";
+    code &lt;&lt; "var marker = new GMarker(pos);";
+    code &lt;&lt; "map.addOverlay(marker);";
+
+    view-&gt;page()-&gt;mainFrame()-&gt;evaluateJavaScript(code.join("\n"));
+}</pre>
+
+<p>
+Bem simples como podem ver, o resultado pode ser visto na imagem abaixo
+</p>
+
+{% imgur src="assets/0x0003/qtgps.png" %}
+
+<p>
+Mas afinal de contas, como funciona essa ponte entre duas linguagens tao distintas? Essa é uma boa pergunta, mas antes de tudo, vou mostrar a diferença entre fazer um <a href="http://en.wikipedia.org/wiki/Language_binding">bind</a> usando luabind e Qt
+</p>
+
+
+<pre class="prettyprint">/*
+ * Exemplo usando luabind
+ * cedido gentilmente pelo pessoal do Wintermoon :)
+ */
+
+#include "IODevice.h" // Apenas para economizar espaço :P
+
+using namespace luabind;
+luabind::open(L);
+
+module(L)
+[
+  class_&lt;IODevice&gt;("IODevice")
+    .enum_("OpenMode")
+    [
+      value("ReadOnly", 2),
+      value("ReadWrite", 4),
+      value("Append", 8),
+      value("Text", 16)
+    ],
+    class_&lt;File, IODevice&gt;("File")
+    .def(constructor&lt;const String &&gt;())
+    .def("open", &File::open)
+    .def("length", &File::length)
+    .def("eof", &File::eof)
+    .def("seek", &File::seek)
+    .def("tell", &File::tell)
+];</pre>
+
+
+<pre class="prettyprint">/*
+ * Exemplo em Qt
+ */
+
+class SumDelegate : public QObject
+{
+    public:
+        explicit SumDelegate(QObject *parent = 0);
+
+    public slots:
+        void process(const QVariant& param1, const QVariant& param2);
+
+    signals:
+        void result(QVariant);
+
+        void error(QString);
+
+    private:
+        Q_OBJECT
+};</pre>
+
+
+<pre class="prettyprint">// Todo objeto que herda QObject e faz uso da macro Q_OBJECT
+// passa a ser visível para o "Meta-Object System", explico isso logo abaixo
+
+QWebFrame *frame = ui-&gt;webView-&gt;page()-&gt;mainFrame();
+frame-&gt;addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
+</pre>
+
+<p>
+Deu para notar a diferença, não? A versão usando luabind além de ter que implementar a classe IODevice, ainda tive o trabalho de "expor" todos os métodos, construtores, enumeradores, além do mais, o luabind faz uso intensivo do <a href="http://www.boost.org/doc/libs/1_48_0/libs/mpl/doc/index.html">boost.mpl</a> que auxilia na hora de descobrir propriedades da classe, mas como é praticamente tudo resolvido em <a href="http://en.wikipedia.org/wiki/Compile_time">tempo de compilação</a> e devido a isso o tempo de compilação se estende um pouco, ainda assim é mais fácil do que usar a <a href="http://www.lua.org/pil/index.html#P4">API do Lua</a> diretamente. Se você ficou curioso e quer conhecer outras alternativas para criar "pontes" para lua, recomendo ler <a href="http://realmensch.org/blog/fun-lua-bindings">esse artigo</a>.
+</p>
+
+<p>
+A versão em Qt é bem mais simplificada graças a esse cara, o <a href="http://developer.qt.nokia.com/doc/qt-4.8/moc.html">Meta-Object Compiler</a> ou MOC para os íntimos, nos poupou de um baita trabalho, o MOC, ao encontrar a macro <a href="http://developer.qt.nokia.com/doc/qt-4.8/qobject.html#Q_OBJECT">Q_OBJECT</a> cria um outro arquivo iniciado em moc_, que no caso do nosso exemplo, será moc_SumDelegate.cpp, que funcionara como "cola", permitindo assim, conectar sinais e slots, introspecção (ou reflexão) e toda aquela macumbaria... mas o que realmente importa é que a nossa classe está pronta para ser usada no módulo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qtscript.html">QtScript</a>.
+</p>
+
+</p>
+<p>
+Bom... Até agora foi apenas uma introdução de como gerar e rodar código JavaScript no <a href="http://trac.webkit.org/wiki/QtWebKit">QtWebKit</a> nada de impressionante. Para iniciar a nossa jornada de fato, eu escolhi um exemplo <b>bem</b> simples, que envolve sinais e slots e uma ponte para a VM JavaScript rodando no QtWebkit, a primeira coisa que devemos fazer é criar algumas classes, e adicionar um slot com o nome <i>process</i>, não se preocupe com o número de parâmetros agora, apenas com o tipo, todos devem ser do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, coloque quantos quiser, e depois adicione um signal com o nome <i>result</i> com um parâmetro do tipo <a href="http://developer.qt.nokia.com/doc/qt-4.8/qvariant.html" title="QVariant">QVariant</a>, a classe vai ficar mais ou menos assim
+</p>
+
+<pre class="prettyprint">class SumDelegate : public QObject
+{
+   public:
+       explicit SumDelegate(QObject *parent = 0);
+
+   public slots:
+       void process(const QVariant& param1, const QVariant& param2);
+
+   signals:
+       void result(QVariant);
+       void error(QString);
+
+   private:
+       Q_OBJECT
+};</pre>
+
+<p>
+e a sua implementação dessa maneira
+</p>
+
+<pre class="prettyprint">SumDelegate::SumDelegate(QObject *parent)
+: QObject(parent)
+{
+}
+
+void SumDelegate::process(const QVariant& param1, const QVariant& param2)
+{
+   bool ok = false;
+   int value1 = param1.toInt(&ok);
+   if (!ok) {
+       emit error(QString("Invalid number!"));
+       return;
+   }
+
+   int value2 = param2.toInt(&ok);
+   if (!ok) {
+       emit error(QString("Invalid number!"));
+       return;
+   }
+
+   emit result(QVariant::fromValue(value1 + value2));
+}</pre>
+
+<p>
+Note que eu adicionei um sinal extra, o <i>error</i>, coloquei lá apenas para ser  notificado quando houver algum tipo de erro (duh!), feito isso crie mais algumas classes. A próxima etapa consiste em registrar essas classes e conseguir, de alguma maneira, fazer uma <a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a> (ou reflexão, como preferir) pelos sinais e slots, vai ser algo como esse trecho de código
+</p>
+
+<pre class="prettyprint">template <typename T>
+void registerDelegate() {
+    const QMetaObject meta = T::staticMetaObject;
+    for(int i = meta.methodOffset(); i &lt; meta.methodCount(); ++i) {
+        qDebug() &lt;&lt; meta.method(i).methodType() &lt;&lt; meta.method(i).signature();
+    }
+}</pre>
+
+<p>
+Que nos vai retornar uma saída parecida com essa
+</p>
+
+<pre class="prettyprint">1 result(QVariant)
+1 error(QString)
+2 process(QVariant,QVariant)</pre>
+
+<p>
+O número (proveniente <a href="http://developer.qt.nokia.com/doc/qt-4.8/qmetamethod.html#MethodType-enum">desse enumerador</a>) que está na frente da assinatura do método, é o tipo dele, se é um sinal, um slot, ou mesmo um construtor, fazendo isso dá até para saber se é público, protegido ou privado, e também quem herdou, listar os enumeradores, entre outras coisas, se quiser saber um pouco mais sobre esse recurso, esse <a href="http://developer.qt.nokia.com/doc/qt-4.8/metaobjects.html" title="Qt Meta-Object System">link</a> contêm mais informações... Enfim, o sistema de meta objetos do Qt é realmente muito poderoso :)
+</p>
+
+<p>
+O propósito dessa <i><a href="http://pt.wikipedia.org/wiki/Introspec%C3%A7%C3%A3o">introspecção</a></i> é colher informações sobre as classes e assim poder gerar código em JavaScript, a ideia é fazer algo como no <a href="http://pipes.yahoo.com/" title="Yahoo Pipes">Yahoo Pipes</a>, sendo que, para cada classe que for registrada no nosso sistema, ela passará a ser um componente visual, os seus slots serão a entrada de dados, seja lá quantos forem, e o sinal <i>result</i> é a saída, a imagem a baixo pode ilustrar melhor a ideia
+</p>
+
+{% imgur src="assets/0x0003/pipes.png" %}
+<center><i>Imagem retirada de um dos exemplos do <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a></i></center>
+
+<p>
+Agora temos que que criar uma ponte entre o código em Qt e a VM de JavaScript, isso é conhecido como <a href="http://developer.qt.nokia.com/doc/qt-4.8/qtwebkit-bridge.html" title="The QtWebKit Bridge">bridge</a>, nessa parte eu vou demonstrar um exemplo simples de como isso é feito.
+</p>
+
+<p>
+Vamos aproveitar a classe SumDelegate e criar um novo <a href="http://doc.qt.nokia.com/qtcreator-2.4/creator-using-qt-designer.html"><i>form</i></a> no projeto, nesse <a href="http://doc.qt.nokia.com/qtcreator-2.4/creator-using-qt-designer.html"><i>form</i></a> adicionei um <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebview.html" title="QWebView">QWebView</a>, o construtor vai ficar mais ou menos assim
+</p>
+
+<pre class="prettyprint">Form::Form(QWidget *parent)
+: QWidget(parent)
+, ui(new Ui::Form)
+{
+   ui->setupUi(this);
+   QWebPage *page = ui-&gt;webView-&gt;page();
+   connect(page-&gt;mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addObject()));
+}</pre>
+
+<p>
+No construtor apenas conectamos o sinal <a href="http://developer.qt.nokia.com/doc/qt-4.8/qwebframe.html#javaScriptWindowObjectCleared" title="javaScriptWindowObjectCleared">javaScriptWindowObjectCleared</a> ao slot <i>addObject</i> da nossa classe, esse sinal é emitido sempre no inicio do carregamento do conteúdo da pagina, sendo assim, nosso objeto já estará pronto para ser usado
+<p>
+
+e no slot <i>addObject</i>
+
+
+<pre class="prettyprint">void Form::addObject()
+{
+   QWebFrame *frame = ui-&gt;webView->page()-&gt;mainFrame();
+   frame-&gt;addToJavaScriptWindowObject(QString("sumDelegate"), new SumDelegate());
+}</pre>
+
+<p>
+o primeiro parâmetro é o nome da instância do nosso objeto no JavaScript, já o segundo, se trata da instância em si. Já o código em JavaScript da página ficou assim
+</p>
+
+<pre class="prettyprint">sumDelegate.result.connect(this, function(data) {
+   alert(data);
+});
+
+sumDelegate.process(140, 100);</pre>
+
+<p>
+como dá para notar, fazer essa ponte entre JavaScript e Qt é bem fácil, "tudo" isso para...</p>
+
+{% imgur src="assets/0x0003/result.png" %}
+<center><i>Divertido, nao? ;)</i></center>
+
+<p>
+Na segunda e ultima parte vamos ver como integrar com a biblioteca <a href="http://neyric.github.com/wireit/" title="WireIT">WireIT</a> e ver funcionando...
+</p>

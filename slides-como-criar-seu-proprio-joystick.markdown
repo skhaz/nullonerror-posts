@@ -1,0 +1,8 @@
+<p>
+<div class="offset3">
+<div style="height:427px;width:650px;">
+<script async class="speakerdeck-embed" data-id="dfbea920e6890130d26b0ae464b76d1b" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+</div>
+</div>
+</p>
+

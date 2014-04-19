@@ -1,0 +1,358 @@
+<p>
+... Ou como preparar o seu blog para escalar para milhões de visitas diárias, mas receber apenas algumas visitas... Da sua mãe, da sua tia, da sua avó, da prima e também da sua namorada :)
+</p>
+
+<p>
+Inspirado no artigo <a href="http://mdswanson.com/blog/2013/08/11/write-things-tell-people.html">Do things, write about it</a>, resolvi escrever um pouco sobre como funciona o meu blog.
+</p>
+
+<p>
+A princípio, optei por utilizar o <a href="http://developers.google.com/appengine/">App Engine</a> por dois motivos: 1 - suporta python; e 2 - a quota gratuita é bem generosa para o  meu humilde blog :)
+</p>
+
+<p>
+Meu objetivo era criar algo extremamente simples, similar a essas ferramentas que geram arquivos estáticos. Um projeto bem popular e que faz isso é o <a href="http://jekyllrb.com/">Jekyll</a>, mas como todo bom hacker, decidi reinventar a roda.
+Já havia feito outros projetos que rodam sob o AppEngine, inclusive a primeira versão do blog, e todos esses projetos seguiam os <em>models</em> da documentação, usando o webapp2 e a engine de renderização do django. Como o AppEngine possui um sistema de arquivos somente leitura, uma alternativa é salvar os dados no BigTable, o que não é um grande problema, uma vez que esses dados ficam no memcached na maior parte do tempo.
+</p>
+
+<p>
+Porém, eu queria fazer algo diferente, queria estudar outros frameworks, e foi então que decidi usar o <a href="http://bottlepy.org/">bottle</a> e o <a href="http://jinja.pocoo.org/">jinja2</a> para renderização de templates. O resultado foi que aprendi <strong>muito</strong>, inclusive cheguei a escrever alguns filtros para o jinja2: um deles é o <a href="https://github.com/skhaz/nullonerror/blob/experimental/imgur.py">imgur</a>, responsável por subir imagens no imgur quando encontra a tag imgur e depois troca pela tag img do html; e o outro, ao encontrar a tag code, invocava o pygments, que por sua vez fazia parser do código e o coloria, mas acabei descartando este filtro e deixando essa tarefa com o cliente, usando o <a href="http://code.google.com/p/google-code-prettify/">prettify</a>.
+<p>
+
+<p>
+{% imgur src="assets/0x0001/post.png" %}
+<p>
+
+<p>
+Como faço uso de uma quantidade considerável de javascript, pesquisei por algumas soluções de <em>lazy loading</em>, e a que mais me agradou foi o <a href="http://www.requirejs.org/">RequireJS</a>. Vamos ver como ficou essa carga logo abaixo:
+</p>
+
+<p>
+<pre class="prettyprint">
+{% raw %}var require = {
+  baseUrl: "/static/js",
+
+  shim: {
+    'jquery': {
+      exports: '$'
+    },
+
+    'bootstrap': {
+      deps: ['jquery']
+    },
+
+    'prettify': {
+      init: function () {
+        prettyPrint()
+      }
+    },
+
+    'jquery.raptorize': {
+      deps: ['jquery']
+    },
+
+    'clippy': {
+      deps: ['jquery'],
+      init: function() {
+        clippy.BASE_PATH = '/static/agents/'
+        clippy.load('Clippy', function(agent) {
+          agent.show()
+          agent.speak('↑ ↑ ↓ ↓ ← → ← → B A')
+          window.agent = agent
+          window.setInterval(function() { agent.animate() }, 1500)
+        });
+      }
+    },
+  },
+
+  deps: [
+    'bootstrap',
+
+    {% for module in modules %}
+    '{{ module }}',
+    {% endfor %}
+  ],
+
+  callback: function() {
+    $(function() {
+      window._gaq = window._gaq || [];
+      window._gaq.push(['_setAccount', '{{ blog.ga_tracking_code }}']);
+      window._gaq.push(['_trackPageview']);
+
+      $.ajax({
+        type : "GET",
+        url: 'http://www.google-analytics.com/ga.js',
+        dataType : "script",
+        data: null,
+        cache : true,
+        success: function() {
+          // 0x90
+        }
+      })
+
+      {% block ready %}
+      {% endblock %}
+    })
+  }
+}
+{% endraw %}
+</pre>
+<p>
+
+<p>
+Adicionar o RequireJS ao projeto é muito simples. Primeiro você configura os módulos que vai usar - quando digo módulos, estou me referindo ao arquivo de javascript, que, no meu caso, se encontram no diretório <em>/static/js</em>, armazenado na váriavel baseUrl.
+</p>
+
+<p>
+Outra configuração importante é o <em>shim</em>, este <em>array</em> contém todos os módulos que eventualmente possam ser usados. Você pode indicar se algum módulo depende de outro, como no caso do <em>jQuery.raptorize</em> que depende do <em>jQuery</em>; isso vai garantir que o <em>jQuery.raptorize</em> será carregado depois que o <em>jQuery</em> já tiver sido carregado! Nesta mesma seção, podemos inserir um código na váriavel <em>init</em> que será executado logo após o módulo ser carregado. No caso do <em><a href="https://www.smore.com/clippy-js">clippy</a></em> temos o seguinte código:
+</p>
+
+<p>
+<pre class="prettyprint">
+init: function() {
+  clippy.BASE_PATH = '/static/agents/'
+  clippy.load('Clippy', function(agent) {
+    agent.show()
+    agent.speak(' ↑ ↑ ↓ ↓ ← → ← → B A')
+    window.agent = agent
+    window.setInterval(function() { agent.animate() }, 1500)
+  });
+</pre>
+</p>
+
+<p>
+Ainda neste pequeno bloco de código javascript, temos algumas linhas com <em>tags</em> do jinja2, e um trecho de código que gostaria de destacar são as seguintes linhas:
+</p>
+
+<p>
+<pre class="prettyprint">
+{% raw %}deps: [
+  'bootstrap',
+
+  {% for module in modules %}
+    '{{ module }}',
+  {% endfor %}
+]
+{% endraw %}
+</pre>
+</p>
+
+<p>
+Como podemos ver, pretendo apenas carregar o módulo <em>bootstrap</em>, e como o mesmo depende do <em>jQuery</em>, teremos apenas esses dois módulos carregados por padrão; é aí que entra o jinja2 - esse trecho de código está no arquivo <em>layout.template</em>, que será herdado por todos os outros <a href="https://github.com/skhaz/nullonerror/tree/experimental/templates">arquivos de templates</a>. Por padrão, a variável <em>modules</em> vem vazia, mas como podemos ver no template <em><a href="https://github.com/skhaz/nullonerror/blob/experimental/templates/about.template">about</a></em> a seguinte linha:
+</p>
+
+<p>
+<pre class="prettyprint">
+{% raw %}{% set modules = ['jquery.raptorize', 'clippy'] %}{% endraw %}
+</pre>
+</p>
+
+<p>
+E é neste momento que atribuo a variável <em>modules</em> com apenas o que vou usar, e não toda aquela tranqueira :)
+</p>
+
+<p>
+Bom, isso é um pouco do que acontece no front-end, veremos agora o que se passa por trás das cortinas, no back-end.
+</p>
+
+<p>
+Uma das coisas que ficou mais legal, modéstia à parte, foi a forma que o template correto é carregado e renderizado, sem ter que informar o nome do template para a função <em>render</em>, desta forma:
+</p>
+
+<p>
+<pre class="prettyprint">
+@route('/')
+@memorize
+def index():
+  return render(entries=db.Query(Entry).order('-published').fetch(limit=25))
+
+@route('/entry/:slug')
+@memorize
+def entry(slug):
+  entry = db.Query(Entry).filter('slug =', slug).get()
+  if not entry:
+    from bottle import HTTPError
+    raise HTTPError(404)
+  else:
+    return render(entry=entry)
+
+@route('/about')
+@memorize
+def about():
+  return render()
+</pre>
+</p>
+
+<p>
+No trecho de código acima, temos 3 rotas, que são definidas pelo decorator <em>route</em>:<br />
+* <strong>index</strong>, que corresponde à url "/"; <br />
+* <strong>entry</strong> que recebe o parâmetro "slug", que nada mais é do que uma <a href="http://en.wikipedia.org/wiki/Clean_URL">url amigavél</a>;<br />
+* <strong>about</strong>, que não recebe nenhum parâmetro.<br />
+</p>
+
+<p>
+Nesse momento você deve estar se perguntando: mas como a função render sabe qual template carregar se essa informação não é passada?
+De uma forma bem simples, meu caro leitor, lembra-se da <a href="http://en.wikipedia.org/wiki/Call_stack">call stack</a>? Pois então, fazendo uso da biblioteca <a href="http://docs.python.org/2/library/inspect.html">inspect</a> é possível examinar a call stack em tempo de execução, e assim, saber qual função chamou a função <em>render</em>. Com o nome da função, basta concatenar o nome dela com a extensão <em>template</em> e renderizar com o jinja2 repassando os parâmetros passados
+</p>
+
+<p>
+<pre class="prettyprint">
+def render(*args, **kwargs):
+  import inspect
+  callframe = inspect.getouterframes(inspect.currentframe(), 2)
+  template = jinja2.get_template('{}.template'.format(callframe[1][3]))
+  return template.render(*args, **kwargs)
+</pre>
+</p>
+
+<p>
+Isso é que é levar o conceito <a href="http://en.wikipedia.org/wiki/Don't_repeat_yourself">Don't Repeat Yourself</a> a sério.
+</p>
+
+<p>
+Mais tarde, durante uma entrevista de emprego, vim a saber que alguns frameworks fazem algo parecido, pórem usando <em>exceptions</em>... Bom saber que ainda existem programadores criativos
+</p>
+
+<p>
+E por falar em DRY, uma tarefa que acabou ficando extremamente repetitiva foi a manipulação de valores no memcache. Na <a href="https://developers.google.com/appengine/docs/python/memcache/usingmemcache">documentação do AppEngine</a> temos o seguinte exemplo:
+</p>
+
+<p>
+<pre class="prettyprint">
+def get_data():
+  data = memcache.get('key')
+  if data is not None:
+    return data
+  else:
+    data = self.query_for_data()
+    memcache.add('key', data, 60)
+    return data
+</pre>
+</p>
+
+<p>
+Contudo, como só pretendo fazer <em>cache</em> das chamadas <em>get</em>, decidi criar um decorator chamado <em>memorize</em>
+</p>
+
+<p>
+<pre class="prettyprint">
+from google.appengine.api import memcache
+
+class memorize():
+  def __init__(self, func):
+    self.func = func
+
+  def __call__(self, *args, **kwargs):
+    key = '{}/{}'.format(self.func.__name__, '/'.join(kwargs.values()))
+    result = memcache.get(key)
+    if result is None:
+      result = self.func(*args, **kwargs)
+      memcache.add(key=key, value=result)
+      return result
+</pre>
+</p>
+
+<p>
+E adicionar em todas as rotas, como foi visto acima.
+</p>
+
+<p>
+Basicamente o que esse decorator faz é gerar uma chave usando a url com seus parâmetros, assim, quando algum parâmetro é alterado, é forçada uma nova chamada à função, e logo após o retorno, é salvo no cache, usando a mesma chave gerada anteriormente. O uso do cache é importante para que o servidor não fique com <em>uma leseira danada</em>.
+</p>
+
+<p>
+Para inserir uma nova entrada no blog, deve-se criar dois arquivos, cada um com uma extensão previamente estabelecida (poderia ser apenas um único arquivo e fazer um split usando uma determinada <em>tag</em>, mas achei que ficaria meio <em>chunchado</em>), então são dois arquivos com o mesmo nome, porém um deles é terminado em <em>.entry</em>, que contém o HTML que será exibido, e o outro, terminado em <em>.meta</em> é um <a href="http://www.yaml.org/">YAML</a> com as informações básicas, como título, data de publicação, tags e se é público ou não. Para automatizar essa inserção de dados, faço uso de <a href="https://help.github.com/articles/post-receive-hooks">post-receive hooks</a> do github, ou seja, logo após um <em>git push</em> o github faz uma chamada <em>POST</em> com um <em>json</em> descrito na documentção do github; com esse json em mãos, basta fazer o <em>parsing</em> e ver quais arquivos foram modificados ou adicionados, com as extensões mencionadas acima:
+</p>
+
+<p>
+<pre class="prettyprint">
+for commit in payload['commits']:
+  for action, files  in commit.iteritems():
+    if action in ['added', 'modified']:
+    for filename in files:
+      basename, extension = os.path.splitext(filename)
+      if extension in ['.entry', '.meta']:
+</pre>
+</p>
+
+<p>
+Assim, basta montar a url completa com a função build_url:
+</p>
+
+<p>
+<pre class="prettyprint">
+github = {
+  'url' : 'https://raw.github.com',
+  'repository' : 'nullonerror-posts',
+  'user' : 'skhaz',
+  'branch' : 'master',
+}
+
+def build_url(filename):
+  return "%s/%s" % ('/'.join([v for k, v in github.iteritems()]), filename)
+</pre>
+</p>
+
+<p>
+Note o "raw" na url, esse é o caminho para o arquivo crú, isso significa que posso baixar o arquivo no seu formato original, assim como foi mencionado acima, tenho dois tipos de arquivos que são tratados de forma especial, como visto abaixo:
+</p>
+
+<p>
+<pre class="prettyprint">
+from google.appengine.api import urlfetch
+from utils import build_url
+result = urlfetch.fetch(url = build_url(filename))
+if result.status_code == 200:
+  entry = Entry.get_or_insert(basename)
+if extension.endswith('.entry'):
+  entry.content = jinja2.from_string(result.content.decode('utf-8')).render()
+else:
+  try:
+    import yaml
+    meta = yaml.load(result.content)
+  except:
+    logging.error('Failed to parse YAML')
+  else:
+    entry.title = meta['title']
+    entry.categories = meta['categories']
+    entry.published = meta['published']
+    entry.slug = basename
+    entry.put()
+</pre>
+</p>
+
+<p>
+Assim como eu posso inserir ou atualizar as entradas, posso fazer o mesmo na hora de remover
+</p>
+
+<p>
+<pre class="prettyprint">
+elif action in ['removed']:
+  for filename in files:
+    basename, extension = os.path.splitext(filename)
+    entry = Entry.get_by_key_name(basename)
+    if entry: entry.delete()
+</pre>
+</p>
+
+<p>
+No final do processo, faço um <em>flush</em> no memcached.
+</p>
+
+<p>
+Outra coisa bacana no AppEngine, e que não é exclusividade do mesmo, é o <a href="https://developers.google.com/speed/pagespeed/">PageSpeed</a>. Esse módulo comprime todos os assets, <em>recomprime</em> todas as imagens para formato webp e as serve caso o navegador suporte, codifica em base64 e inclui no html assets muito pequenos para evitar requisições, unifica javascript e css, entre outras técnicas descritas no manual.
+</p>
+
+<p>
+Além disso, uso o <a href="https://www.cloudflare.com/">CloudFlare</a> para <a href="http://en.wikipedia.org/wiki/Content_delivery_network">CDN</a>, que me ajuda a salvar um bocado de banda :)
+</p>
+
+<p>
+Ainda falta implementar muita coisa, estive pensando em escrever um editor em Qt e usar a <a href="http://libgit2.github.com/">libgit2</a> para commitar e fazer push diretamente das alterações.
+</p>
+
+<p>
+Enfim... É isso, obrigado por ter lido esse texto longo e chato :)<br />
+Ciao!
+<p>
+
