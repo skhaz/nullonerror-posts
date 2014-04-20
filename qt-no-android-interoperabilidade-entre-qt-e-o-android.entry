@@ -1,4 +1,3 @@
-
 <p>{% imgur src="assets/qt-no-android-interoperabilidade-entre-qt-e-o-android/qt-and-android.png" %}</p>
 
 <p>Como alguns de vocês sabem, tenho cada vez mais me aprofundado no desenvolvimento mobile, usando os mais variados SDKs. Recentemente precisei integrar a SDK da <a href="https://www.revmobmobileadnetwork.com">RevMob</a> num projeto mobile usando <a href="http://qt-project.org">Qt</a>; hoje irei cobrir apenas o Android, mas em breve postarei como fiz o mesmo para iOS.</p>
@@ -27,7 +26,6 @@
 <li><em>5.*.*</em> A versão</li>
 <li><em>android_(armv5|android_armv7|android_x86)</em> A arquitetura</li>
 </ul>
-
 
 <p>É onde tem exatamente o que precisava, o AndroidManifest.xml, version.xml, os diretórios src e res. E o que temos dentro de _src/org/qtproject/qt5/android/bindings_? Temos QtActivity QtApplication, que herdam Activity e Application do Android SDK respectivamente, e como podemos ver, no AndroidManifest.xml</p>
 
