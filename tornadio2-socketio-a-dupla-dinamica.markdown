@@ -17,4 +17,3 @@ Minha intenção não era escrever um <a href="https://en.wikipedia.org/wiki/Hel
 <p>
 <a href="https://github.com/skhaz/come-on-baby-light-my-LED">Código fonte</a>
 </p>
-
